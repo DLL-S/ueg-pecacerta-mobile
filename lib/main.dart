@@ -1,14 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:peca_certa_app/ui/login_pagina.dart';
-import 'dart:io';
-import 'package:http/http.dart' as http;
+import 'package:peca_certa_app/controller/produtoController.dart';
 
-const request = "https://10.0.2.2:8080/api/v1/";
 void main() async {
-  //HttpOverrides.global = new MyHttpOverrides();
-  http.Response response = await http.get(request + "produtos");
-  print(response.body);
-
   runApp(MyApp());
 }
 

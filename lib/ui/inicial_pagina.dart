@@ -67,7 +67,7 @@ class _PaginaInicialState extends State<PaginaInicial> {
               ),
               onTap: () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => Produtos()));
+                    MaterialPageRoute(builder: (context) => ProdutosTela()));
               },
             ),
             ListTile(

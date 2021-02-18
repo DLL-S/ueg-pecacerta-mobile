@@ -1,6 +1,7 @@
 import 'package:ant_icons/ant_icons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:peca_certa_app/ui/categorias_pagina.dart';
 import 'package:peca_certa_app/ui/produtos_pagina.dart';
 
 class PaginaInicial extends StatefulWidget {
@@ -97,6 +98,10 @@ class _PaginaInicialState extends State<PaginaInicial> {
                 'Categorias',
                 style: TextStyle(color: Color(0xFF293845), fontSize: 20),
               ),
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => CategoriasTela()));
+              },
             ),
           ],
         ),

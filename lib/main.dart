@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:peca_certa_app/ui/login_pagina.dart';
+import 'package:peca_certa_app/ui/login_ui.dart';
 
 void main() async {
   runApp(MyApp());

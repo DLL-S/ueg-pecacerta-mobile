@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:peca_certa_app/ui/inicial_pagina.dart';
+import 'package:peca_certa_app/ui/inicial_ui.dart';
 
 class LoginPagina extends StatelessWidget {
   @override

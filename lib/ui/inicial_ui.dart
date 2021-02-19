@@ -1,8 +1,9 @@
 import 'package:ant_icons/ant_icons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:peca_certa_app/ui/categorias_pagina.dart';
-import 'package:peca_certa_app/ui/produtos_pagina.dart';
+import 'package:peca_certa_app/ui/categorias_ui.dart';
+import 'package:peca_certa_app/ui/marcas_ui.dart';
+import 'package:peca_certa_app/ui/produtos_ui.dart';
 
 class PaginaInicial extends StatefulWidget {
   @override
@@ -91,6 +92,10 @@ class _PaginaInicialState extends State<PaginaInicial> {
                 'Marcas',
                 style: TextStyle(color: Color(0xFF293845), fontSize: 20),
               ),
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => MarcasTela()));
+              },
             ),
             ListTile(
               leading: Icon(AntIcons.tags_outline),

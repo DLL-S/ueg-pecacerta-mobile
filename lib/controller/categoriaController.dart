@@ -11,26 +11,7 @@ Categoria cat = new Categoria();
 class CategoriaController {
   CategoriaController();
 
-  Future<List<Categoria>> listaCategorias() async {
-    try {
-      List<Categoria> listaCategorias = List();
-      final response = await http.get(request);
-
-      if (response.statusCode == 200) {
-        var decodeJson = jsonDecode(Utf8Decoder().convert(response.bodyBytes));
-        decodeJson
-            .forEach((item) => listaCategorias.add(Categoria.fromJson(item)));
-        return listaCategorias;
-      } else {
-        print("Erro ao carregar lista de produtos");
-        return null;
-      }
-    } catch (e) {
-      print(e);
-      return null;
-    }
-  }
-
+//Adicionar Categoria
   Future<APIResponse<bool>> incluirCategoria(Categoria item) async {
     return await http
         .post(request, headers: headers, body: json.encode(item.toJson()))
@@ -42,5 +23,36 @@ class CategoriaController {
       return APIResponse<bool>(error: true, errorMessage: 'Erro');
     }).catchError((_) =>
             APIResponse<bool>(error: true, errorMessage: 'Erro (Exceção)'));
+  }
+
+//Consultar Categoria pelo ID
+  Future<APIResponse<Categoria>> consultaCategoriaID(String codigo) {
+    return http.get(request + codigo, headers: headers).then((data) {
+      if (data.statusCode == 200) {
+        final jsonData = json.decode(data.body);
+        return APIResponse<Categoria>(data: Categoria.fromJson(jsonData));
+      }
+      return APIResponse<Categoria>(
+          error: true, errorMessage: data.statusCode.toString());
+    }).catchError(
+        (_) => APIResponse<Categoria>(error: true, errorMessage: toString()));
+  }
+
+//Método para Listar categorias
+  Future<APIResponse<List<Categoria>>> listarCategorias() {
+    return http.get(request, headers: headers).then((data) {
+      if (data.statusCode == 200) {
+        final jsonData = json.decode(Utf8Decoder().convert(data.bodyBytes));
+        final categorias = <Categoria>[];
+
+        for (var item in jsonData) {
+          categorias.add(Categoria.fromJson(item));
+        }
+        return APIResponse<List<Categoria>>(data: categorias);
+      }
+      return APIResponse<List<Categoria>>(
+          error: true, errorMessage: data.statusCode.toString());
+    }).catchError((_) => APIResponse<List<Categoria>>(
+        error: true, errorMessage: "Ocorreu um erro"));
   }
 }

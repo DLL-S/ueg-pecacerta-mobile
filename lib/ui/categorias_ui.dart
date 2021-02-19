@@ -1,7 +1,5 @@
 import 'dart:async';
 
-import 'package:ant_icons/ant_icons.dart';
-import 'package:ant_icons/icon_data.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:peca_certa_app/controller/categoriaController.dart';

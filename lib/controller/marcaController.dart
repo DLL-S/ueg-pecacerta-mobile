@@ -27,7 +27,7 @@ class MarcaController {
 
 //Consultar Marca pelo ID
   Future<APIResponse<Marca>> consultaMarcaID(String codigo) {
-    return http.get(request + codigo, headers: headers).then((data) {
+    return http.get(request + "/" + codigo, headers: headers).then((data) {
       if (data.statusCode == 200) {
         final jsonData = json.decode(data.body);
         return APIResponse<Marca>(data: Marca.fromJson(jsonData));

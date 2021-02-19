@@ -1,10 +1,13 @@
 import 'dart:async';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:peca_certa_app/controller/categoriaController.dart';
+import 'package:peca_certa_app/controller/marcaController.dart';
 import 'package:peca_certa_app/controller/produtoController.dart';
 import 'package:peca_certa_app/models/API_Response.dart';
+import 'package:peca_certa_app/models/Categoria.dart';
+import 'package:peca_certa_app/models/Marca.dart';
 import 'package:peca_certa_app/models/Produto.dart';
 
 class ProdutosTela extends StatefulWidget {
@@ -13,14 +16,28 @@ class ProdutosTela extends StatefulWidget {
 }
 
 class _ProdutosTelaState extends State<ProdutosTela> {
+  //Controllers
   ProdutoController produtoController = new ProdutoController();
+  CategoriaController categoriaController = new CategoriaController();
+  MarcaController marcaController = new MarcaController();
+
+  //API's
   APIResponse<List<Produto>> _apiResponse = APIResponse<List<Produto>>();
+  APIResponse<List<Categoria>> _apiResponseCategoria =
+      APIResponse<List<Categoria>>();
+  APIResponse<List<Marca>> _apiResponseMarca = APIResponse<List<Marca>>();
+  APIResponse<Categoria> _apiResponseCategoriaID = APIResponse<Categoria>();
+  APIResponse<Marca> _apiResponseMarcaID = APIResponse<Marca>();
+
+  //Lista de Retorno dos Produtos
   List<Produto> _filteredProdutos = List<Produto>();
 
+  //Variáveis
   Produto novoProduto = Produto();
   bool _estaCarregando = false;
   bool typing = false;
 
+  //Chave de identificação do Form e controllers dos texts fields
   GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   TextEditingController _campoBuscaProduto = TextEditingController();
@@ -29,8 +46,51 @@ class _ProdutosTelaState extends State<ProdutosTela> {
   TextEditingController _campoDescricaoProduto = TextEditingController();
   TextEditingController _campoPrecoProduto = TextEditingController();
   TextEditingController _campoQtdeEstoqueProduto = TextEditingController();
-  bool _sel = false;
+  String _selectionCategoria;
+  String textCategoria = 'Selecione a categoria';
+  String textMarca = 'Selecione a marca';
+  String _selectionMarca;
 
+  //Controle checkbox
+  bool _sel = true;
+
+  //Limpa Campos Fora do form
+  void limpaCampos() {
+    _selectionCategoria = 'Selecione a categoria';
+    _selectionMarca = 'Selecione a marca';
+    _sel = true;
+  }
+
+//Solicitações para API dos dados de produtos, categorias, marcas.
+  void listaProdutos() async {
+    setState(() {
+      _estaCarregando = true;
+    });
+    _apiResponse = await produtoController.listarProdutos();
+    _filteredProdutos = _apiResponse.data;
+    _filteredProdutos.sort((a, b) {
+      return a.nome.toLowerCase().compareTo(b.nome.toLowerCase());
+    });
+    setState(() {
+      _estaCarregando = false;
+    });
+  }
+
+  void listaCategorias() async {
+    _apiResponseCategoria = await categoriaController.listarCategorias();
+    _apiResponseCategoria.data.sort((a, b) {
+      return a.nome.toLowerCase().compareTo(b.nome.toLowerCase());
+    });
+  }
+
+  void listaMarcas() async {
+    _apiResponseMarca = await marcaController.listarMarcas();
+    _apiResponseMarca.data.sort((a, b) {
+      return a.nome.toLowerCase().compareTo(b.nome.toLowerCase());
+    });
+  }
+
+//Mostra dialog de cadastro de um novo produto
   Future<void> showInformationDialog(BuildContext context) async {
     return await showDialog(
       context: context,
@@ -40,11 +100,9 @@ class _ProdutosTelaState extends State<ProdutosTela> {
             content: Form(
               key: _formKey,
               child: Container(
-                height: 300,
-                width: 300,
+                height: 400,
                 child: SingleChildScrollView(
                     child: Column(
-                  mainAxisSize: MainAxisSize.min,
                   children: [
                     Text("Adicionar Produto"),
                     TextFormField(
@@ -58,18 +116,59 @@ class _ProdutosTelaState extends State<ProdutosTela> {
                       controller: _campoCodigoDeBarrasProduto,
                       keyboardType: TextInputType.number,
                       validator: (value) {
-                        return value.isNotEmpty ? null : "Campo Obrigatório.";
+                        return value.isNotEmpty ? null : "Campo Obrigatório";
                       },
                       maxLength: 13,
                       decoration: InputDecoration(hintText: "Codigo de barras"),
                     ),
                     TextFormField(
                       controller: _campoDescricaoProduto,
+                      maxLength: 50,
                       validator: (value) {
                         return value.isNotEmpty ? null : "Campo Obrigatório.";
                       },
                       decoration: InputDecoration(hintText: "Descrição"),
                     ),
+                    DropdownButton<String>(
+                        isExpanded: true,
+                        hint: Text(textCategoria),
+                        items: _apiResponseCategoria.data
+                                ?.map(
+                                  (Categoria item) => new DropdownMenuItem(
+                                    child: new Text(
+                                      item.nome,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    value: item.codigo.toString(),
+                                  ),
+                                )
+                                ?.toList() ??
+                            [],
+                        onChanged: (String value) {
+                          setState(() {
+                            _selectionCategoria = value;
+                          });
+                        }),
+                    DropdownButton<String>(
+                        isExpanded: true,
+                        hint: Text(textMarca),
+                        items: _apiResponseMarca.data
+                                ?.map(
+                                  (Marca item) => new DropdownMenuItem(
+                                    child: new Text(
+                                      '${item.nome}',
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    value: item.codigo.toString(),
+                                  ),
+                                )
+                                ?.toList() ??
+                            [],
+                        onChanged: (String value) {
+                          setState(() {
+                            _selectionMarca = value;
+                          });
+                        }),
                     TextFormField(
                       controller: _campoPrecoProduto,
                       keyboardType: TextInputType.number,
@@ -86,7 +185,7 @@ class _ProdutosTelaState extends State<ProdutosTela> {
                       },
                       decoration: InputDecoration(hintText: "Quantidade"),
                     ),
-                    Row(
+                    /*Row(
                       children: <Widget>[
                         Text("Ativo:"),
                         Checkbox(
@@ -97,7 +196,7 @@ class _ProdutosTelaState extends State<ProdutosTela> {
                               });
                             })
                       ],
-                    )
+                    )*/
                   ],
                 )),
               ),
@@ -110,6 +209,7 @@ class _ProdutosTelaState extends State<ProdutosTela> {
                 ),
                 onPressed: () {
                   _formKey.currentState.reset();
+                  limpaCampos();
                   Navigator.of(context).pop();
                 },
               ),
@@ -117,12 +217,29 @@ class _ProdutosTelaState extends State<ProdutosTela> {
                   child: Text('Adicionar'),
                   onPressed: () async {
                     if (_formKey.currentState.validate()) {
+                      //Atribuindo os valores dos campos ao atributos de produto
+                      novoProduto.codigoDeBarras =
+                          _campoCodigoDeBarrasProduto.text;
                       novoProduto.nome = _campoNomeProduto.text;
-                      novoProduto.ativo = true;
+                      novoProduto.descricao = _campoDescricaoProduto.text;
+                      _apiResponseCategoriaID = await categoriaController
+                          .consultaCategoriaID(_selectionCategoria);
+                      novoProduto.categoria = _apiResponseCategoriaID.data;
+                      _apiResponseMarcaID = await marcaController
+                          .consultaMarcaID(_selectionMarca);
+                      novoProduto.marca = _apiResponseMarcaID.data;
+                      novoProduto.preco =
+                          double.tryParse(_campoPrecoProduto.text);
+                      novoProduto.qtdeEstoque =
+                          int.tryParse(_campoQtdeEstoqueProduto.text);
+                      novoProduto.ativo = _sel = true;
+
+                      //
                       await produtoController.incluirProduto(novoProduto);
+                      limpaCampos();
                       Navigator.of(context).pop();
                       _formKey.currentState.reset();
-                      buscaLista();
+                      listaProdutos();
                     }
                   }),
             ],
@@ -132,20 +249,7 @@ class _ProdutosTelaState extends State<ProdutosTela> {
     );
   }
 
-  void buscaLista() async {
-    setState(() {
-      _estaCarregando = true;
-    });
-    _apiResponse = await produtoController.listarProdutos();
-    _filteredProdutos = _apiResponse.data;
-    _filteredProdutos.sort((a, b) {
-      return a.nome.toLowerCase().compareTo(b.nome.toLowerCase());
-    });
-    setState(() {
-      _estaCarregando = false;
-    });
-  }
-
+//Converte o Status do produto para string Ativo ou Inativo
   String textoAtivo(String text) {
     if (text == 'true') {
       return 'Ativo';
@@ -156,7 +260,9 @@ class _ProdutosTelaState extends State<ProdutosTela> {
 
   @override
   void initState() {
-    buscaLista();
+    listaProdutos();
+    listaCategorias();
+    listaMarcas();
     super.initState();
   }
 
@@ -303,7 +409,7 @@ class _ProdutosTelaState extends State<ProdutosTela> {
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: <Widget>[
                               Text(
-                                'R\$${_filteredProdutos[index].preco.toStringAsFixed(2)}',
+                                'R\$ ${_filteredProdutos[index].preco.toStringAsFixed(2)}',
                                 overflow: TextOverflow.clip,
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold,

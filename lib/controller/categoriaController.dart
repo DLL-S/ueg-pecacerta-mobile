@@ -4,7 +4,7 @@ import 'package:peca_certa_app/models/API_Response.dart';
 import 'package:peca_certa_app/models/Categoria.dart';
 import 'package:http/http.dart' as http;
 
-const String request = "https://pecacerta-api.herokuapp.com/api/v1/categorias";
+const String request = "http://pecacerta-api.herokuapp.com/api/v1/categorias";
 const headers = {'Content-Type': 'application/json'};
 Categoria cat = new Categoria();
 
@@ -27,7 +27,7 @@ class CategoriaController {
 
 //Consultar Categoria pelo ID
   Future<APIResponse<Categoria>> consultaCategoriaID(String codigo) {
-    return http.get(request + codigo, headers: headers).then((data) {
+    return http.get(request + "/" + codigo, headers: headers).then((data) {
       if (data.statusCode == 200) {
         final jsonData = json.decode(data.body);
         return APIResponse<Categoria>(data: Categoria.fromJson(jsonData));

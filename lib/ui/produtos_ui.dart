@@ -282,10 +282,15 @@ class _ProdutosTelaState extends State<ProdutosTela> {
                                     ),
                                     Text(
                                       'Status:  ${textoAtivo(_filteredProdutos[index].ativo.toString())}',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.normal,
-                                          fontSize: 10,
-                                          color: Colors.black),
+                                      style: _filteredProdutos[index].ativo
+                                          ? TextStyle(
+                                              fontWeight: FontWeight.normal,
+                                              fontSize: 10,
+                                              color: Color(0xFF008000))
+                                          : TextStyle(
+                                              fontWeight: FontWeight.normal,
+                                              fontSize: 10,
+                                              color: Color(0xFF8B0000)),
                                     ),
                                   ],
                                 ),

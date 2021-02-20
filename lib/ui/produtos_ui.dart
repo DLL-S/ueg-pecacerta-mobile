@@ -46,18 +46,16 @@ class _ProdutosTelaState extends State<ProdutosTela> {
   TextEditingController _campoDescricaoProduto = TextEditingController();
   TextEditingController _campoPrecoProduto = TextEditingController();
   TextEditingController _campoQtdeEstoqueProduto = TextEditingController();
-  String _selectionCategoria;
-  String textCategoria = 'Selecione a categoria';
-  String textMarca = 'Selecione a marca';
-  String _selectionMarca;
+  String textCategoria, idCategoria;
+  String textMarca, idMarca;
 
   //Controle checkbox
   bool _sel = true;
 
   //Limpa Campos Fora do form
   void limpaCampos() {
-    _selectionCategoria = 'Selecione a categoria';
-    _selectionMarca = 'Selecione a marca';
+    textCategoria = null;
+    textMarca = null;
     _sel = true;
   }
 
@@ -130,8 +128,9 @@ class _ProdutosTelaState extends State<ProdutosTela> {
                       decoration: InputDecoration(hintText: "Descrição"),
                     ),
                     DropdownButton<String>(
+                        value: textCategoria,
+                        hint: Text('Selecione a categoria'),
                         isExpanded: true,
-                        hint: Text(textCategoria),
                         items: _apiResponseCategoria.data
                                 ?.map(
                                   (Categoria item) => new DropdownMenuItem(
@@ -146,12 +145,14 @@ class _ProdutosTelaState extends State<ProdutosTela> {
                             [],
                         onChanged: (String value) {
                           setState(() {
-                            _selectionCategoria = value;
+                            textCategoria = value;
+                            idCategoria = value;
                           });
                         }),
                     DropdownButton<String>(
                         isExpanded: true,
-                        hint: Text(textMarca),
+                        hint: Text('Selecione a marca'),
+                        value: textMarca,
                         items: _apiResponseMarca.data
                                 ?.map(
                                   (Marca item) => new DropdownMenuItem(
@@ -166,7 +167,8 @@ class _ProdutosTelaState extends State<ProdutosTela> {
                             [],
                         onChanged: (String value) {
                           setState(() {
-                            _selectionMarca = value;
+                            textMarca = value;
+                            idMarca = value;
                           });
                         }),
                     TextFormField(
@@ -223,10 +225,10 @@ class _ProdutosTelaState extends State<ProdutosTela> {
                       novoProduto.nome = _campoNomeProduto.text;
                       novoProduto.descricao = _campoDescricaoProduto.text;
                       _apiResponseCategoriaID = await categoriaController
-                          .consultaCategoriaID(_selectionCategoria);
+                          .consultaCategoriaID(idCategoria);
                       novoProduto.categoria = _apiResponseCategoriaID.data;
-                      _apiResponseMarcaID = await marcaController
-                          .consultaMarcaID(_selectionMarca);
+                      _apiResponseMarcaID =
+                          await marcaController.consultaMarcaID(idMarca);
                       novoProduto.marca = _apiResponseMarcaID.data;
                       novoProduto.preco =
                           double.tryParse(_campoPrecoProduto.text);

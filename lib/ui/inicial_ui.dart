@@ -19,22 +19,22 @@ class _PaginaInicialState extends State<PaginaInicial> {
         centerTitle: true,
         backgroundColor: Theme.of(context).primaryColor,
         actions: <Widget>[
-          Padding(
-              padding: EdgeInsets.only(right: 20),
-              child: GestureDetector(
-                onTap: () {},
-                child: Icon(
-                  Icons.notifications,
-                ),
-              )),
-          Padding(
-              padding: EdgeInsets.only(right: 20),
-              child: GestureDetector(
-                onTap: () {},
-                child: Icon(
-                  Icons.more_vert,
-                ),
-              )),
+          GestureDetector(
+            onTap: () {},
+            child: Icon(
+              Icons.notifications,
+            ),
+          ),
+          PopupMenuButton<String>(
+            itemBuilder: (BuildContext context) {
+              return {'Sobre', 'Sair'}.map((String choice) {
+                return PopupMenuItem<String>(
+                  value: choice,
+                  child: Text(choice),
+                );
+              }).toList();
+            },
+          ),
         ],
       ),
       drawer: Drawer(

@@ -154,27 +154,28 @@ class _MarcasTelaState extends State<MarcasTela> {
           child: Icon(Icons.add),
           backgroundColor: Theme.of(context).primaryColor,
         ),
-        body: Column(
-          children: <Widget>[
-            Expanded(child: Builder(builder: (_) {
-              if (_estaCarregando) {
-                return Center(child: CircularProgressIndicator());
-              }
-              if (_apiResponse.error) {
-                return Center(
-                    child: Text(_apiResponse.errorMessage.toString()));
-              }
-              return ListView.builder(
-                  itemCount: _filteredMarcas.length,
-                  itemBuilder: (BuildContext _, int index) {
-                    return Card(
-                      child: ListTile(
-                        title: Text(
-                          _filteredMarcas[index].nome,
-                        ),
-                        subtitle: Text(textoAtivo(
-                            _filteredMarcas[index].ativo.toString())),
-                        /*leading: Text(
+        body: RefreshIndicator(
+          child: Column(
+            children: <Widget>[
+              Expanded(child: Builder(builder: (_) {
+                if (_estaCarregando) {
+                  return Center(child: CircularProgressIndicator());
+                }
+                if (_apiResponse.error) {
+                  return Center(
+                      child: Text(_apiResponse.errorMessage.toString()));
+                }
+                return ListView.builder(
+                    itemCount: _filteredMarcas.length,
+                    itemBuilder: (BuildContext _, int index) {
+                      return Card(
+                        child: ListTile(
+                          title: Text(
+                            _filteredMarcas[index].nome,
+                          ),
+                          subtitle: Text(textoAtivo(
+                              _filteredMarcas[index].ativo.toString())),
+                          /*leading: Text(
                           _apiResponse.data[index].codigo.toString(),
                           style: TextStyle(
                             color: Theme.of(context).primaryColor,
@@ -183,18 +184,23 @@ class _MarcasTelaState extends State<MarcasTela> {
                           ),
                           textAlign: TextAlign.center,
                         ),*/
-                        trailing: Icon(Icons.keyboard_arrow_right),
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => AlteraMarcaTela()));
-                        },
-                      ),
-                    );
-                  });
-            }))
-          ],
+                          trailing: Icon(Icons.keyboard_arrow_right),
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => AlteraMarcaTela(
+                                        idMarca: _filteredMarcas[index])));
+                          },
+                        ),
+                      );
+                    });
+              }))
+            ],
+          ),
+          onRefresh: () async {
+            buscaLista();
+          },
         ));
   }
 }

@@ -25,6 +25,21 @@ class MarcaController {
             APIResponse<bool>(error: true, errorMessage: 'Erro (Exceção)'));
   }
 
+//Alterar Marca
+  Future<APIResponse<bool>> alterarMarca(Marca item) async {
+    return await http
+        .put(request + "/" + item.codigo.toString(),
+            headers: headers, body: json.encode(item.toJson()))
+        .then((data) {
+      if (data.statusCode == 200) {
+        return APIResponse<bool>(data: true);
+      }
+      print(data.statusCode.toString());
+      return APIResponse<bool>(error: true, errorMessage: 'Erro');
+    }).catchError((_) =>
+            APIResponse<bool>(error: true, errorMessage: 'Erro (Exceção)'));
+  }
+
 //Consultar Marca pelo ID
   Future<APIResponse<Marca>> consultaMarcaID(String codigo) {
     return http.get(request + "/" + codigo, headers: headers).then((data) {

@@ -234,7 +234,7 @@ class _ProdutosTelaState extends State<ProdutosTela> {
                           double.tryParse(_campoPrecoProduto.text);
                       novoProduto.qtdeEstoque =
                           int.tryParse(_campoQtdeEstoqueProduto.text);
-                      novoProduto.ativo = _sel = true;
+                      novoProduto.ativo = true;
 
                       //
                       await produtoController.incluirProduto(novoProduto);

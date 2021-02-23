@@ -108,53 +108,53 @@ class _CategoriasTelaState extends State<CategoriasTela> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: typing
-              ? TextFormField(
-                  controller: _campoBuscaCategoria,
-                  style: TextStyle(color: Colors.white),
-                  onChanged: (string) {
-                    setState(() {
-                      _filteredCategorias = _apiResponse.data
-                          .where((i) => i.nome
-                              .toLowerCase()
-                              .contains(string.toLowerCase()))
-                          .toList();
-                    });
-                  },
-                )
-              : Text("Categorias"),
-          centerTitle: true,
-          backgroundColor: Theme.of(context).primaryColor,
-          leading: IconButton(
-            icon: Icon(Icons.arrow_back),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-          actions: [
-            Padding(
-                padding: EdgeInsets.only(right: 20),
-                child: GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      typing = !typing;
-                    });
-                  },
-                  child: Icon(
-                    typing ? Icons.send : Icons.search,
-                  ),
-                )),
-          ],
-        ),
-        floatingActionButton: FloatingActionButton(
+      appBar: AppBar(
+        title: typing
+            ? TextFormField(
+                controller: _campoBuscaCategoria,
+                style: TextStyle(color: Colors.white),
+                onChanged: (string) {
+                  setState(() {
+                    _filteredCategorias = _apiResponse.data
+                        .where((i) =>
+                            i.nome.toLowerCase().contains(string.toLowerCase()))
+                        .toList();
+                  });
+                },
+              )
+            : Text("Categorias"),
+        centerTitle: true,
+        backgroundColor: Theme.of(context).primaryColor,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
           onPressed: () {
-            showInformationDialog(context);
+            Navigator.pop(context);
           },
-          child: Icon(Icons.add),
-          backgroundColor: Theme.of(context).primaryColor,
         ),
-        body: Column(
+        actions: [
+          Padding(
+              padding: EdgeInsets.only(right: 20),
+              child: GestureDetector(
+                onTap: () {
+                  setState(() {
+                    typing = !typing;
+                  });
+                },
+                child: Icon(
+                  typing ? Icons.send : Icons.search,
+                ),
+              )),
+        ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showInformationDialog(context);
+        },
+        child: Icon(Icons.add),
+        backgroundColor: Theme.of(context).primaryColor,
+      ),
+      body: RefreshIndicator(
+        child: Column(
           children: <Widget>[
             Expanded(child: Builder(builder: (_) {
               if (_estaCarregando) {
@@ -188,13 +188,20 @@ class _CategoriasTelaState extends State<CategoriasTela> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => AlteraCategoriaTela()));
+                                  builder: (context) => AlteraCategoriaTela(
+                                      idCategoria:
+                                          _filteredCategorias[index])));
                         },
                       ),
                     );
                   });
             }))
           ],
-        ));
+        ),
+        onRefresh: () async {
+          buscaLista();
+        },
+      ),
+    );
   }
 }

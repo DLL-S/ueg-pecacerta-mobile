@@ -21,6 +21,7 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  cpfcnpj: ^1.0.3
   ant_icons: ^1.0.0
   http: ^0.12.2
   mask_text_input_formatter: ^1.2.1
@@ -83,3 +84,6 @@ flutter:
 
   assets:
     - assets/logo.png
+    - assets/person.png
+    - assets/DLLS.png
+    - assets/DLLSLogo.gif

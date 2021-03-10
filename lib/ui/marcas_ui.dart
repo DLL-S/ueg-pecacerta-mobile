@@ -116,9 +116,11 @@ class _MarcasTelaState extends State<MarcasTela> {
                   onChanged: (string) {
                     setState(() {
                       _filteredMarcas = _apiResponse.data
-                          .where((i) => i.nome
-                              .toLowerCase()
-                              .contains(string.toLowerCase()))
+                          .where((i) =>
+                              i.nome
+                                  .toLowerCase()
+                                  .contains(string.toLowerCase()) ||
+                              i.codigo.toString().startsWith(string))
                           .toList();
                     });
                   },

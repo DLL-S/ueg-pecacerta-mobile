@@ -39,6 +39,9 @@ class _AlteraCategoriaTelaState extends State<AlteraCategoriaTela> {
         padding: EdgeInsets.all(10),
         child: Column(
           children: <Widget>[
+            SizedBox(
+              height: 20,
+            ),
             TextField(
               controller: _controllerCampoCodigo,
               readOnly: true,

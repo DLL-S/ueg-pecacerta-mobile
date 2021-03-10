@@ -38,6 +38,9 @@ class _AlteraMarcaTelaState extends State<AlteraMarcaTela> {
         padding: EdgeInsets.all(10),
         child: Column(
           children: <Widget>[
+            SizedBox(
+              height: 20,
+            ),
             TextField(
               controller: _controllerCampoCodigo,
               readOnly: true,

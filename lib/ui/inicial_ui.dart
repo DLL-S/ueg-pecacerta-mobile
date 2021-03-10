@@ -2,8 +2,12 @@ import 'package:ant_icons/ant_icons.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:peca_certa_app/ui/categorias_ui.dart';
+import 'package:peca_certa_app/ui/clientes_ui.dart';
+import 'package:peca_certa_app/ui/funcionarios_ui.dart';
+import 'package:peca_certa_app/ui/login_ui.dart';
 import 'package:peca_certa_app/ui/marcas_ui.dart';
 import 'package:peca_certa_app/ui/produtos_ui.dart';
+import 'package:peca_certa_app/ui/sobre_ui.dart';
 
 class PaginaInicial extends StatefulWidget {
   @override
@@ -11,6 +15,30 @@ class PaginaInicial extends StatefulWidget {
 }
 
 class _PaginaInicialState extends State<PaginaInicial> {
+  AlertDialog showAlertDialog(BuildContext context) {
+    AlertDialog alerta = AlertDialog(
+      title: Text("Sair"),
+      content: Text("Você deseja realmente sair?"),
+      actions: [
+        FlatButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: Text("Cancelar")),
+        FlatButton(
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => LoginPagina()));
+            },
+            child: Text(
+              "Sair",
+              style: TextStyle(color: Colors.red),
+            ))
+      ],
+    );
+    return alerta;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,6 +61,19 @@ class _PaginaInicialState extends State<PaginaInicial> {
                   child: Text(choice),
                 );
               }).toList();
+            },
+            onSelected: (value) {
+              if (value == 'Sair') {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return showAlertDialog(context);
+                  },
+                );
+              } else {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => SobreTela()));
+              }
             },
           ),
         ],
@@ -85,6 +126,10 @@ class _PaginaInicialState extends State<PaginaInicial> {
                 'Funcionários',
                 style: TextStyle(color: Color(0xFF293845), fontSize: 20),
               ),
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => FuncionarioTela()));
+              },
             ),
             ListTile(
               leading: Icon(AntIcons.file_done),
@@ -126,7 +171,7 @@ class _PaginaInicialState extends State<PaginaInicial> {
             child: FlatButton(
               color: Theme.of(context).primaryColor,
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
                   Text(
                     "Clientes",
@@ -135,10 +180,13 @@ class _PaginaInicialState extends State<PaginaInicial> {
                       color: Colors.white,
                       fontSize: 25,
                     ),
-                  )
+                  ),
                 ],
               ),
-              onPressed: () => {},
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => ClienteTela()));
+              },
             ),
           ),
         ),

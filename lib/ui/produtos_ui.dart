@@ -9,6 +9,7 @@ import 'package:peca_certa_app/models/API_Response.dart';
 import 'package:peca_certa_app/models/Categoria.dart';
 import 'package:peca_certa_app/models/Marca.dart';
 import 'package:peca_certa_app/models/Produto.dart';
+import 'package:peca_certa_app/ui/alterarProduto_ui.dart';
 
 class ProdutosTela extends StatefulWidget {
   @override
@@ -50,7 +51,7 @@ class _ProdutosTelaState extends State<ProdutosTela> {
   String textMarca, idMarca;
 
   //Controle checkbox
-  bool _sel = true;
+  bool _sel;
 
   //Limpa Campos Fora do form
   void limpaCampos() {
@@ -82,7 +83,7 @@ class _ProdutosTelaState extends State<ProdutosTela> {
   }
 
   void listaMarcas() async {
-    _apiResponseMarca = await marcaController.listarMarcas();
+    _apiResponseMarca = await marcaController.listarMarcasAtivas();
     _apiResponseMarca.data.sort((a, b) {
       return a.nome.toLowerCase().compareTo(b.nome.toLowerCase());
     });
@@ -102,7 +103,7 @@ class _ProdutosTelaState extends State<ProdutosTela> {
                 child: SingleChildScrollView(
                     child: Column(
                   children: [
-                    Text("Adicionar Produto"),
+                    Text("Cadastrar Produto"),
                     TextFormField(
                       controller: _campoNomeProduto,
                       validator: (value) {
@@ -317,31 +318,32 @@ class _ProdutosTelaState extends State<ProdutosTela> {
           child: Icon(Icons.add),
           backgroundColor: Theme.of(context).primaryColor,
         ),
-        body: Column(
-          children: <Widget>[
-            Expanded(child: Builder(builder: (_) {
-              if (_estaCarregando) {
-                return Center(child: CircularProgressIndicator());
-              }
-              if (_apiResponse.error) {
-                return Center(
-                    child: Text(_apiResponse.errorMessage.toString()));
-              }
-              return ListView.builder(
-                  itemCount: _filteredProdutos.length,
-                  itemBuilder: (BuildContext _, int index) {
-                    return Card(
-                        child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        Container(
-                            padding:
-                                EdgeInsets.only(top: 10, bottom: 10, left: 10),
-                            alignment: Alignment.centerLeft,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                /*Row(
+        body: RefreshIndicator(
+            child: Column(
+              children: <Widget>[
+                Expanded(child: Builder(builder: (_) {
+                  if (_estaCarregando) {
+                    return Center(child: CircularProgressIndicator());
+                  }
+                  if (_apiResponse.error) {
+                    return Center(
+                        child: Text(_apiResponse.errorMessage.toString()));
+                  }
+                  return ListView.builder(
+                      itemCount: _filteredProdutos.length,
+                      itemBuilder: (BuildContext _, int index) {
+                        return Card(
+                            child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Container(
+                                padding: EdgeInsets.only(
+                                    top: 10, bottom: 10, left: 10),
+                                alignment: Alignment.centerLeft,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    /*Row(
                                   children: [
                                     Text(
                                       "Código: ${_apiResponse.data[index].codigo}",
@@ -356,76 +358,104 @@ class _ProdutosTelaState extends State<ProdutosTela> {
                                 SizedBox(
                                   height: 10,
                                 ),*/
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: <Widget>[
-                                    Text(
-                                      _filteredProdutos[index].nome,
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 15,
-                                          color: Colors.black),
-                                    ),
-                                    Text(
-                                      _filteredProdutos[index].descricao,
-                                      overflow: TextOverflow.clip,
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.normal,
-                                          fontSize: 10,
-                                          color: Colors.black),
-                                    ),
-                                    Text(
-                                      'Marca: ${_filteredProdutos[index].marca.nome}  |  Categoria: ${_apiResponse.data[index].categoria.nome}',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.normal,
-                                          fontSize: 10,
-                                          color: Colors.black),
-                                    ),
-                                    Text(
-                                      'Qtde. Estoque:  ${_filteredProdutos[index].qtdeEstoque}',
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.normal,
-                                          fontSize: 10,
-                                          color: Colors.black),
-                                    ),
-                                    Text(
-                                      'Status:  ${textoAtivo(_filteredProdutos[index].ativo.toString())}',
-                                      style: _filteredProdutos[index].ativo
-                                          ? TextStyle(
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: <Widget>[
+                                        Text(
+                                          _filteredProdutos[index].nome,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 15,
+                                              color: Colors.black),
+                                        ),
+                                        Text(
+                                          _filteredProdutos[index].descricao,
+                                          overflow: TextOverflow.clip,
+                                          style: TextStyle(
                                               fontWeight: FontWeight.normal,
                                               fontSize: 10,
-                                              color: Color(0xFF008000))
-                                          : TextStyle(
+                                              color: Colors.black),
+                                        ),
+                                        Text(
+                                          'Marca: ${_filteredProdutos[index].marca.nome}  |  Categoria: ${_apiResponse.data[index].categoria.nome}',
+                                          style: TextStyle(
                                               fontWeight: FontWeight.normal,
                                               fontSize: 10,
-                                              color: Color(0xFF8B0000)),
+                                              color: Colors.black),
+                                        ),
+                                        Text(
+                                          'Qtde. Estoque:  ${_filteredProdutos[index].qtdeEstoque}',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.normal,
+                                              fontSize: 10,
+                                              color: Colors.black),
+                                        ),
+                                        Text(
+                                          'Status:  ${textoAtivo(_filteredProdutos[index].ativo.toString())}',
+                                          style: _filteredProdutos[index].ativo
+                                              ? TextStyle(
+                                                  fontWeight: FontWeight.normal,
+                                                  fontSize: 10,
+                                                  color: Color(0xFF008000))
+                                              : TextStyle(
+                                                  fontWeight: FontWeight.normal,
+                                                  fontSize: 10,
+                                                  color: Color(0xFF8B0000)),
+                                        ),
+                                      ],
                                     ),
                                   ],
-                                ),
-                              ],
-                            )),
-                        Container(
-                          padding:
-                              EdgeInsets.only(top: 10, bottom: 10, right: 10),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: <Widget>[
-                              Text(
-                                'R\$ ${_filteredProdutos[index].preco.toStringAsFixed(2)}',
-                                overflow: TextOverflow.clip,
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20,
-                                    color: Colors.black),
+                                )),
+                            Container(
+                              padding: EdgeInsets.only(
+                                  top: 10, bottom: 10, right: 10),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: <Widget>[
+                                  Text(
+                                    'R\$ ${_filteredProdutos[index].preco.toStringAsFixed(2)}',
+                                    overflow: TextOverflow.clip,
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 20,
+                                        color: Colors.black),
+                                  ),
+                                  Row(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.baseline,
+                                    children: <Widget>[
+                                      FlatButton(
+                                        onPressed: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      AlteraProdutoTela(
+                                                          produto:
+                                                              _filteredProdutos[
+                                                                  index])));
+                                        },
+                                        child: Icon(Icons.edit,
+                                            size: 20,
+                                            color:
+                                                Theme.of(context).primaryColor),
+                                      ),
+                                    ],
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ));
-                  });
-            }))
-          ],
-        ));
+                            ),
+                          ],
+                        ));
+                      });
+                }))
+              ],
+            ),
+            onRefresh: () async {
+              listaProdutos();
+              listaCategorias();
+              listaMarcas();
+            }));
   }
 }

@@ -4,7 +4,8 @@ import 'package:peca_certa_app/models/API_Response.dart';
 import 'package:peca_certa_app/models/Produto.dart';
 import 'package:http/http.dart' as http;
 
-const String request = "https://pecacerta-api.herokuapp.com/api/v1/produtos";
+const String request =
+    "https://pecacerta-api-hml.herokuapp.com/api/v1/produtos";
 const headers = {'Content-Type': 'application/json'};
 
 class ProdutoController {
@@ -35,6 +36,21 @@ class ProdutoController {
           error: true, errorMessage: data.statusCode.toString());
     }).catchError(
         (_) => APIResponse<Produto>(error: true, errorMessage: toString()));
+  }
+
+//Alterar Produto pelo ID
+  Future<APIResponse<bool>> alterarProduto(Produto item) async {
+    return await http
+        .put(request + "/" + item.codigo.toString(),
+            headers: headers, body: json.encode(item.toJson()))
+        .then((data) {
+      if (data.statusCode == 204) {
+        return APIResponse<bool>(data: true);
+      }
+      print(data.statusCode.toString());
+      return APIResponse<bool>(error: true, errorMessage: 'Erro');
+    }).catchError((_) =>
+            APIResponse<bool>(error: true, errorMessage: 'Erro (Exceção)'));
   }
 
 //Listar Produtos

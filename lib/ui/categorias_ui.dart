@@ -117,7 +117,10 @@ class _CategoriasTelaState extends State<CategoriasTela> {
                   setState(() {
                     _filteredCategorias = _apiResponse.data
                         .where((i) =>
-                            i.nome.toLowerCase().contains(string.toLowerCase()))
+                            i.nome
+                                .toLowerCase()
+                                .contains(string.toLowerCase()) ||
+                            i.codigo.toString().startsWith(string))
                         .toList();
                   });
                 },
@@ -141,7 +144,7 @@ class _CategoriasTelaState extends State<CategoriasTela> {
                   });
                 },
                 child: Icon(
-                  typing ? Icons.send : Icons.search,
+                  typing ? Icons.search : Icons.search,
                 ),
               )),
         ],

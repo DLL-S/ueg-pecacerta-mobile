@@ -4,7 +4,7 @@ import 'package:peca_certa_app/models/API_Response.dart';
 import 'package:peca_certa_app/models/Marca.dart';
 import 'package:http/http.dart' as http;
 
-const String request = "https://pecacerta-api.herokuapp.com/api/v1/marcas";
+const String request = "https://pecacerta-api-hml.herokuapp.com/api/v1/marcas";
 const headers = {'Content-Type': 'application/json'};
 Marca cat = new Marca();
 
@@ -56,6 +56,25 @@ class MarcaController {
 //Método para Listar marcas
   Future<APIResponse<List<Marca>>> listarMarcas() {
     return http.get(request, headers: headers).then((data) {
+      if (data.statusCode == 200) {
+        final jsonData = json.decode(Utf8Decoder().convert(data.bodyBytes));
+        final marcas = <Marca>[];
+
+        for (var item in jsonData) {
+          marcas.add(Marca.fromJson(item));
+        }
+
+        return APIResponse<List<Marca>>(data: marcas);
+      }
+      return APIResponse<List<Marca>>(
+          error: true, errorMessage: data.statusCode.toString());
+    }).catchError((_) =>
+        APIResponse<List<Marca>>(error: true, errorMessage: "Ocorreu um erro"));
+  }
+
+  //Método para Listar marcas ativas
+  Future<APIResponse<List<Marca>>> listarMarcasAtivas() {
+    return http.get(request + '/ativos', headers: headers).then((data) {
       if (data.statusCode == 200) {
         final jsonData = json.decode(Utf8Decoder().convert(data.bodyBytes));
         final marcas = <Marca>[];

@@ -4,7 +4,8 @@ import 'package:peca_certa_app/models/API_Response.dart';
 import 'package:peca_certa_app/models/Categoria.dart';
 import 'package:http/http.dart' as http;
 
-const String request = "http://pecacerta-api.herokuapp.com/api/v1/categorias";
+const String request =
+    "http://pecacerta-api-hml.herokuapp.com/api/v1/categorias";
 const headers = {'Content-Type': 'application/json'};
 Categoria cat = new Categoria();
 
@@ -56,6 +57,24 @@ class CategoriaController {
 //Método para Listar categorias
   Future<APIResponse<List<Categoria>>> listarCategorias() {
     return http.get(request, headers: headers).then((data) {
+      if (data.statusCode == 200) {
+        final jsonData = json.decode(Utf8Decoder().convert(data.bodyBytes));
+        final categorias = <Categoria>[];
+
+        for (var item in jsonData) {
+          categorias.add(Categoria.fromJson(item));
+        }
+        return APIResponse<List<Categoria>>(data: categorias);
+      }
+      return APIResponse<List<Categoria>>(
+          error: true, errorMessage: data.statusCode.toString());
+    }).catchError((_) => APIResponse<List<Categoria>>(
+        error: true, errorMessage: "Ocorreu um erro"));
+  }
+
+  //Método para Listar categorias ativas
+  Future<APIResponse<List<Categoria>>> listarCategoriasAtivas() {
+    return http.get(request + "/ativos", headers: headers).then((data) {
       if (data.statusCode == 200) {
         final jsonData = json.decode(Utf8Decoder().convert(data.bodyBytes));
         final categorias = <Categoria>[];

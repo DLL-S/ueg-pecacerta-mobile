@@ -6,7 +6,8 @@ import 'package:intl/intl.dart';
 import 'package:brasil_fields/brasil_fields.dart';
 import 'package:peca_certa_app/controller/clienteController.dart';
 import 'package:peca_certa_app/models/Cliente.dart';
-import 'package:peca_certa_app/utils/TipoCliente.dart';
+import 'package:peca_certa_app/models/Endereco.dart';
+import 'package:peca_certa_app/ui/clientes_ui.dart';
 
 class AdicionarClienteTela extends StatefulWidget {
   @override
@@ -15,6 +16,8 @@ class AdicionarClienteTela extends StatefulWidget {
 
 class _AdicionarClienteTelaState extends State<AdicionarClienteTela> {
   ClienteController clienteController = new ClienteController();
+  Cliente cliente = Cliente();
+  Endereco enderecoCliente = Endereco();
 
   //Chave de identificação do Form e controllers dos texts fields
   GlobalKey<FormState> _formKeyCliente = GlobalKey<FormState>();
@@ -46,6 +49,26 @@ class _AdicionarClienteTelaState extends State<AdicionarClienteTela> {
 
   @override
   Widget build(BuildContext context) {
+    AlertDialog alert = AlertDialog(
+      title: Text("Confirmação"),
+      content: Text("Deseja confirmar a inserção do cliente?"),
+      actions: [
+        TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: Text("Cancelar")),
+        TextButton(
+            onPressed: () async {
+              await clienteController.incluirCliente(cliente);
+              _formKeyCliente.currentState.reset();
+              Navigator.pop(context);
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => ClienteTela()));
+            },
+            child: Text("Confirmar"))
+      ],
+    );
     return Scaffold(
       appBar: AppBar(
         title: Text("Novo Cliente"),
@@ -65,7 +88,6 @@ class _AdicionarClienteTelaState extends State<AdicionarClienteTela> {
             ),
             onTap: () async {
               if (_formKeyCliente.currentState.validate()) {
-                Cliente cliente = new Cliente();
                 cliente.ativo = true;
                 cliente.nome = _campoNomeCliente.text;
                 _selPF == true
@@ -92,23 +114,27 @@ class _AdicionarClienteTelaState extends State<AdicionarClienteTela> {
                 cliente.telefone = UtilBrasilFields.extrairTelefone(
                     _campoTelefoneCliente.text);
 
-                cliente.endereco.logradouro = _campoLogradouroCliente.text;
+                enderecoCliente.logradouro = _campoLogradouroCliente.text;
 
-                cliente.endereco.numero = _campoNumeroCliente.text;
+                enderecoCliente.numero = _campoNumeroCliente.text;
 
-                cliente.endereco.complemento = _campoComplementoCliente.text;
+                enderecoCliente.complemento = _campoComplementoCliente.text;
 
-                cliente.endereco.bairro = _campoBairroCliente.text;
+                enderecoCliente.bairro = _campoBairroCliente.text;
 
-                cliente.endereco.cep = _campoCEPCliente.text;
+                enderecoCliente.cep = _campoCEPCliente.text;
 
-                cliente.endereco.cidade = _campoCidadeCliente.text;
+                enderecoCliente.cidade = _campoCidadeCliente.text;
 
-                cliente.endereco.estado = _campoEstadoCliente.text;
+                enderecoCliente.estado = _campoEstadoCliente.text;
 
-                await clienteController.incluirCliente(cliente);
+                cliente.endereco = enderecoCliente;
 
-                _formKeyCliente.currentState.reset();
+                showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return alert;
+                    });
               }
             },
           ),
@@ -191,7 +217,7 @@ class _AdicionarClienteTelaState extends State<AdicionarClienteTela> {
 
                           if (data != null) {
                             final _newData =
-                                DateFormat('yyyy/MM/dd').format(data);
+                                DateFormat('yyyy-MM-dd').format(data);
                             _data = _newData;
                             _dataText.text = UtilData.obterDataDDMMAAAA(data);
                           }
@@ -239,6 +265,9 @@ class _AdicionarClienteTelaState extends State<AdicionarClienteTela> {
                 ),
                 TextFormField(
                   controller: _campoLogradouroCliente,
+                  validator: (value) {
+                    return value.isNotEmpty ? null : "Campo Obrigatório.";
+                  },
                   decoration: InputDecoration(hintText: "Logradouro"),
                   maxLength: 40,
                 ),
@@ -249,6 +278,9 @@ class _AdicionarClienteTelaState extends State<AdicionarClienteTela> {
                       child: TextFormField(
                         controller: _campoNumeroCliente,
                         keyboardType: TextInputType.number,
+                        validator: (value) {
+                          return value.isNotEmpty ? null : "Campo Obrigatório.";
+                        },
                         decoration: InputDecoration(hintText: "Nº"),
                         maxLength: 10,
                       ),
@@ -260,6 +292,9 @@ class _AdicionarClienteTelaState extends State<AdicionarClienteTela> {
                       width: 200,
                       child: TextFormField(
                         controller: _campoComplementoCliente,
+                        validator: (value) {
+                          return value.isNotEmpty ? null : "Campo Obrigatório.";
+                        },
                         decoration: InputDecoration(hintText: "Complemento"),
                         maxLength: 30,
                       ),
@@ -268,22 +303,34 @@ class _AdicionarClienteTelaState extends State<AdicionarClienteTela> {
                 ),
                 TextFormField(
                   controller: _campoBairroCliente,
+                  validator: (value) {
+                    return value.isNotEmpty ? null : "Campo Obrigatório.";
+                  },
                   decoration: InputDecoration(hintText: "Bairro"),
                   maxLength: 30,
                 ),
                 TextFormField(
                   controller: _campoCidadeCliente,
+                  validator: (value) {
+                    return value.isNotEmpty ? null : "Campo Obrigatório.";
+                  },
                   decoration: InputDecoration(hintText: "Cidade"),
                   maxLength: 30,
                 ),
                 TextFormField(
                   controller: _campoEstadoCliente,
+                  validator: (value) {
+                    return value.isNotEmpty ? null : "Campo Obrigatório.";
+                  },
                   decoration: InputDecoration(hintText: "Estado"),
                   maxLength: 30,
                 ),
                 TextFormField(
                   controller: _campoCEPCliente,
                   keyboardType: TextInputType.number,
+                  validator: (value) {
+                    return value.isNotEmpty ? null : "Campo Obrigatório.";
+                  },
                   decoration: InputDecoration(hintText: "CEP"),
                   inputFormatters: [
                     FilteringTextInputFormatter.digitsOnly,

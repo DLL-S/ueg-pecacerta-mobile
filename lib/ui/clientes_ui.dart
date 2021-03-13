@@ -172,18 +172,32 @@ class _ClienteTelaState extends State<ClienteTela> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Text(
-                              "Data de Nascimento: " +
-                                  _filteredClientes[index]
-                                      .dataNascFund
-                                      .substring(8, 10) +
-                                  "/" +
-                                  _filteredClientes[index]
-                                      .dataNascFund
-                                      .substring(5, 7) +
-                                  "/" +
-                                  _filteredClientes[index]
-                                      .dataNascFund
-                                      .substring(0, 4),
+                              _filteredClientes[index].tipoCliente ==
+                                      "PESSOA_JURIDICA"
+                                  ? "Data de Fundação: " +
+                                      _filteredClientes[index]
+                                          .dataNascFund
+                                          .substring(8, 10) +
+                                      "/" +
+                                      _filteredClientes[index]
+                                          .dataNascFund
+                                          .substring(5, 7) +
+                                      "/" +
+                                      _filteredClientes[index]
+                                          .dataNascFund
+                                          .substring(0, 4)
+                                  : "Data de Nascimento: " +
+                                      _filteredClientes[index]
+                                          .dataNascFund
+                                          .substring(8, 10) +
+                                      "/" +
+                                      _filteredClientes[index]
+                                          .dataNascFund
+                                          .substring(5, 7) +
+                                      "/" +
+                                      _filteredClientes[index]
+                                          .dataNascFund
+                                          .substring(0, 4),
                               style:
                                   TextStyle(color: Colors.black, fontSize: 13),
                             ),

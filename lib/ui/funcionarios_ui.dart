@@ -4,6 +4,7 @@ import 'package:peca_certa_app/models/API_Response.dart';
 import 'package:peca_certa_app/models/Funcionario.dart';
 import 'package:intl/intl.dart';
 import 'package:cpfcnpj/cpfcnpj.dart';
+import 'package:peca_certa_app/ui/alterarFuncionario_ui.dart';
 
 class FuncionarioTela extends StatefulWidget {
   @override
@@ -112,140 +113,172 @@ class _FuncionarioTelaState extends State<FuncionarioTela> {
                 return ListView.builder(
                   itemCount: _filteredFuncionarios.length,
                   itemBuilder: (BuildContext _, int index) {
-                    return Card(
-                        child: ExpansionTile(
-                      backgroundColor: Theme.of(context).backgroundColor,
-                      childrenPadding:
-                          EdgeInsets.only(left: 10, bottom: 10, right: 10),
-                      expandedCrossAxisAlignment: CrossAxisAlignment.start,
-                      title: Text(_filteredFuncionarios[index].nome),
-                      subtitle: Text(
-                        _filteredFuncionarios[index].tipoDeFuncionario,
-                        style: TextStyle(fontSize: 12),
-                      ),
-                      leading: Container(
-                        width: 30,
-                        height: 30,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Colors.white,
-                          border: Border.all(
-                            color: Colors.black,
-                            width: 1,
+                    return Dismissible(
+                      key: Key(_filteredFuncionarios[index].toString()),
+                      child: Card(
+                          child: ExpansionTile(
+                        backgroundColor: Theme.of(context).backgroundColor,
+                        childrenPadding:
+                            EdgeInsets.only(left: 10, bottom: 10, right: 10),
+                        expandedCrossAxisAlignment: CrossAxisAlignment.start,
+                        title: Text(_filteredFuncionarios[index].nome),
+                        subtitle: Text(
+                          _filteredFuncionarios[index].tipoDeFuncionario,
+                          style: TextStyle(fontSize: 12),
+                        ),
+                        leading: Container(
+                          width: 30,
+                          height: 30,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.white,
+                            border: Border.all(
+                              color: Colors.black,
+                              width: 1,
+                            ),
+                            image: DecorationImage(
+                                fit: BoxFit.contain,
+                                image: AssetImage("assets/person.png"),
+                                scale: 0.5),
                           ),
-                          image: DecorationImage(
-                              fit: BoxFit.contain,
-                              image: AssetImage("assets/person.png"),
-                              scale: 0.5),
                         ),
-                      ),
-                      children: <Widget>[
-                        Divider(
+                        children: <Widget>[
+                          Divider(
+                            color: Theme.of(context).primaryColor,
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Row(
+                            children: <Widget>[
+                              Text(
+                                "CPF: " +
+                                    CPF.format(
+                                        _filteredFuncionarios[index].cpf),
+                                style: TextStyle(
+                                    color: Colors.black, fontSize: 13),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                "Data de Nascimento: " +
+                                    _filteredFuncionarios[index]
+                                        .dataNasc
+                                        .substring(8, 10) +
+                                    "/" +
+                                    _filteredFuncionarios[index]
+                                        .dataNasc
+                                        .substring(5, 7) +
+                                    "/" +
+                                    _filteredFuncionarios[index]
+                                        .dataNasc
+                                        .substring(0, 4),
+                                style: TextStyle(
+                                    color: Colors.black, fontSize: 13),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                "E-mail: " + _filteredFuncionarios[index].email,
+                                style: TextStyle(
+                                    color: Colors.black, fontSize: 13),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                "Telefone: " +
+                                    _filteredFuncionarios[index].telefone,
+                                style: TextStyle(
+                                    color: Colors.black, fontSize: 13),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                "Endereço: " +
+                                    _filteredFuncionarios[index]
+                                        .endereco
+                                        .logradouro,
+                                style: TextStyle(
+                                    color: Colors.black, fontSize: 13),
+                              ),
+                              Text(
+                                "Nº: " +
+                                    _filteredFuncionarios[index]
+                                        .endereco
+                                        .numero +
+                                    " | Complemento: " +
+                                    _filteredFuncionarios[index]
+                                        .endereco
+                                        .complemento,
+                                style: TextStyle(
+                                    color: Colors.black, fontSize: 13),
+                              ),
+                              Text(
+                                "Bairro: " +
+                                    _filteredFuncionarios[index]
+                                        .endereco
+                                        .bairro,
+                                style: TextStyle(
+                                    color: Colors.black, fontSize: 13),
+                              ),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Text(
+                                "Cidade: " +
+                                    _filteredFuncionarios[index]
+                                        .endereco
+                                        .cidade +
+                                    " | Estado: " +
+                                    _filteredFuncionarios[index]
+                                        .endereco
+                                        .estado,
+                                style: TextStyle(
+                                    color: Colors.black, fontSize: 13),
+                              ),
+                              SizedBox(
+                                height: 5,
+                              ),
+                              Text(
+                                "CEP: " +
+                                    _filteredFuncionarios[index].endereco.cep,
+                                style: TextStyle(
+                                    color: Colors.black, fontSize: 13),
+                              ),
+                            ],
+                          ),
+                        ],
+                      )),
+                      direction: DismissDirection.endToStart,
+                      background: Container(
+                          padding: EdgeInsets.only(right: 20),
                           color: Theme.of(context).primaryColor,
-                        ),
-                        SizedBox(
-                          height: 5,
-                        ),
-                        Row(
-                          children: <Widget>[
-                            Text(
-                              "CPF: " +
-                                  CPF.format(_filteredFuncionarios[index].cpf),
-                              style:
-                                  TextStyle(color: Colors.black, fontSize: 13),
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: <Widget>[
-                            Text(
-                              "Data de Nascimento: " +
-                                  _filteredFuncionarios[index]
-                                      .dataNasc
-                                      .substring(5, 7) +
-                                  "/" +
-                                  _filteredFuncionarios[index]
-                                      .dataNasc
-                                      .substring(8, 10) +
-                                  "/" +
-                                  _filteredFuncionarios[index]
-                                      .dataNasc
-                                      .substring(0, 4),
-                              style:
-                                  TextStyle(color: Colors.black, fontSize: 13),
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Text(
-                              "E-mail: " + _filteredFuncionarios[index].email,
-                              style:
-                                  TextStyle(color: Colors.black, fontSize: 13),
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Text(
-                              "Telefone: " +
-                                  _filteredFuncionarios[index].telefone,
-                              style:
-                                  TextStyle(color: Colors.black, fontSize: 13),
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Text(
-                              "Endereço: " +
-                                  _filteredFuncionarios[index]
-                                      .endereco
-                                      .logradouro,
-                              style:
-                                  TextStyle(color: Colors.black, fontSize: 13),
-                            ),
-                            Text(
-                              "Nº: " +
-                                  _filteredFuncionarios[index].endereco.numero +
-                                  " | Complemento: " +
-                                  _filteredFuncionarios[index]
-                                      .endereco
-                                      .complemento,
-                              style:
-                                  TextStyle(color: Colors.black, fontSize: 13),
-                            ),
-                            Text(
-                              "Bairro: " +
-                                  _filteredFuncionarios[index].endereco.bairro,
-                              style:
-                                  TextStyle(color: Colors.black, fontSize: 13),
-                            ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Text(
-                              "Cidade: " +
-                                  _filteredFuncionarios[index].endereco.cidade +
-                                  " | Estado: " +
-                                  _filteredFuncionarios[index].endereco.estado,
-                              style:
-                                  TextStyle(color: Colors.black, fontSize: 13),
-                            ),
-                            SizedBox(
-                              height: 5,
-                            ),
-                            Text(
-                              "CEP: " +
-                                  _filteredFuncionarios[index].endereco.cep,
-                              style:
-                                  TextStyle(color: Colors.black, fontSize: 13),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ));
+                          alignment: Alignment.centerRight,
+                          child: Icon(
+                            Icons.mode_rounded,
+                            color: Colors.white,
+                          )),
+                      onDismissed: (direction) {
+                        if (direction == DismissDirection.endToStart) {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => AlterarFuncionarioTela(
+                                      idFuncionario:
+                                          _filteredFuncionarios[index])));
+                          listaFuncionarios();
+                        }
+                      },
+                    );
                   },
                 );
               })),

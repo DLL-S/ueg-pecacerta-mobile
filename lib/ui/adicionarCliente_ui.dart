@@ -163,7 +163,7 @@ class _AdicionarClienteTelaState extends State<AdicionarClienteTela> {
                           });
                         }),
                     Text(
-                      "Pessoa Jurídica: ",
+                      "Pessoa Jurídica ",
                     ),
                     Checkbox(
                         value: _selPJ,

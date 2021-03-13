@@ -39,10 +39,10 @@ class ClienteController {
   }
 
 //Alterar Cliente pelo ID
-  Future<APIResponse<bool>> alterarCliente(Cliente funcionario) async {
+  Future<APIResponse<bool>> alterarCliente(Cliente cliente) async {
     return await http
-        .put(request + "/" + funcionario.codigo.toString(),
-            headers: headers, body: json.encode(funcionario.toJson()))
+        .put(request + "/" + cliente.codigo.toString(),
+            headers: headers, body: json.encode(cliente.toJson()))
         .then((data) {
       if (data.statusCode == 204) {
         return APIResponse<bool>(data: true);

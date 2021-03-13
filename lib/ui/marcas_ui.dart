@@ -15,7 +15,7 @@ class MarcasTela extends StatefulWidget {
 class _MarcasTelaState extends State<MarcasTela> {
   MarcaController marcaController = new MarcaController();
   APIResponse<List<Marca>> _apiResponse = APIResponse<List<Marca>>();
-  List<Marca> _filteredMarcas = List<Marca>();
+  List<Marca> _filteredMarcas = <Marca>[];
 
   Marca novaMarca = Marca();
   bool _estaCarregando = false;

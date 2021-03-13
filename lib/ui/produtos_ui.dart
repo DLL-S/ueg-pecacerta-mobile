@@ -31,7 +31,7 @@ class _ProdutosTelaState extends State<ProdutosTela> {
   APIResponse<Marca> _apiResponseMarcaID = APIResponse<Marca>();
 
   //Lista de Retorno dos Produtos
-  List<Produto> _filteredProdutos = List<Produto>();
+  List<Produto> _filteredProdutos = <Produto>[];
 
   //Variáveis
   Produto novoProduto = Produto();
@@ -50,14 +50,10 @@ class _ProdutosTelaState extends State<ProdutosTela> {
   String textCategoria, idCategoria;
   String textMarca, idMarca;
 
-  //Controle checkbox
-  bool _sel;
-
   //Limpa Campos Fora do form
   void limpaCampos() {
     textCategoria = null;
     textMarca = null;
-    _sel = true;
   }
 
 //Solicitações para API dos dados de produtos, categorias, marcas.
@@ -424,8 +420,9 @@ class _ProdutosTelaState extends State<ProdutosTela> {
                                   Row(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.baseline,
+                                    textBaseline: TextBaseline.alphabetic,
                                     children: <Widget>[
-                                      FlatButton(
+                                      TextButton(
                                         onPressed: () {
                                           Navigator.push(
                                               context,

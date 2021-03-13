@@ -20,12 +20,12 @@ class _PaginaInicialState extends State<PaginaInicial> {
       title: Text("Sair"),
       content: Text("Você deseja realmente sair?"),
       actions: [
-        FlatButton(
+        TextButton(
             onPressed: () {
               Navigator.pop(context);
             },
             child: Text("Cancelar")),
-        FlatButton(
+        TextButton(
             onPressed: () {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => LoginPagina()));
@@ -168,8 +168,9 @@ class _PaginaInicialState extends State<PaginaInicial> {
             ),
           ),
           child: SizedBox.expand(
-            child: FlatButton(
-              color: Theme.of(context).primaryColor,
+            child: TextButton(
+              style: TextButton.styleFrom(
+                  backgroundColor: Theme.of(context).primaryColor),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
@@ -201,8 +202,9 @@ class _PaginaInicialState extends State<PaginaInicial> {
             ),
           ),
           child: SizedBox.expand(
-            child: FlatButton(
-              color: Theme.of(context).primaryColor,
+            child: TextButton(
+              style: TextButton.styleFrom(
+                  backgroundColor: Theme.of(context).primaryColor),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
@@ -231,8 +233,9 @@ class _PaginaInicialState extends State<PaginaInicial> {
             ),
           ),
           child: SizedBox.expand(
-            child: FlatButton(
-              color: Theme.of(context).primaryColor,
+            child: TextButton(
+              style: TextButton.styleFrom(
+                  backgroundColor: Theme.of(context).primaryColor),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[

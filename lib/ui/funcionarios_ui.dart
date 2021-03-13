@@ -24,7 +24,7 @@ class _FuncionarioTelaState extends State<FuncionarioTela> {
   //Controle dos TextField
   TextEditingController _campoBuscaFuncionario = TextEditingController();
 
-  List<Funcionario> _filteredFuncionarios = List<Funcionario>();
+  List<Funcionario> _filteredFuncionarios = <Funcionario>[];
 
   //Refresh Indicator
   bool _estaCarregando = false;

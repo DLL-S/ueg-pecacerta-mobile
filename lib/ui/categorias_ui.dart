@@ -14,8 +14,9 @@ class CategoriasTela extends StatefulWidget {
 
 class _CategoriasTelaState extends State<CategoriasTela> {
   CategoriaController categoriaController = new CategoriaController();
-  APIResponse<List<Categoria>> _apiResponse = APIResponse<List<Categoria>>();
-  List<Categoria> _filteredCategorias = List<Categoria>();
+  APIResponse<List<Categoria>> _apiResponse =
+      new APIResponse<List<Categoria>>();
+  List<Categoria> _filteredCategorias = <Categoria>[];
 
   Categoria novaCategoria = Categoria();
   bool _estaCarregando = false;

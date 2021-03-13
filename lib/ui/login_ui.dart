@@ -69,8 +69,9 @@ class LoginPagina extends StatelessWidget {
                   ),
                 ),
                 child: SizedBox.expand(
-                  child: FlatButton(
-                    color: Theme.of(context).primaryColor,
+                  child: TextButton(
+                    style: TextButton.styleFrom(
+                        backgroundColor: Theme.of(context).primaryColor),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[

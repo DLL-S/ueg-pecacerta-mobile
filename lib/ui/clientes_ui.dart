@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:peca_certa_app/controller/clienteController.dart';
 import 'package:peca_certa_app/models/API_Response.dart';
 import 'package:peca_certa_app/models/Cliente.dart';
-import 'package:intl/intl.dart';
 import 'package:cpfcnpj/cpfcnpj.dart';
+import 'package:peca_certa_app/ui/adicionar_cliente_ui.dart';
 
 class ClienteTela extends StatefulWidget {
   @override
@@ -11,8 +11,7 @@ class ClienteTela extends StatefulWidget {
 }
 
 class _ClienteTelaState extends State<ClienteTela> {
-  //Formatar Data
-  DateFormat dateFormat = new DateFormat('dd-MM-yyyy');
+  TextEditingController _campoBuscaCliente = TextEditingController();
 
   //Controller
   ClienteController clienteController = new ClienteController();
@@ -21,9 +20,8 @@ class _ClienteTelaState extends State<ClienteTela> {
   APIResponse<List<Cliente>> _apiResponse = APIResponse<List<Cliente>>();
 
   //Controle dos TextField
-  TextEditingController _campoBuscaCliente = TextEditingController();
 
-  List<Cliente> _filteredClientes = List<Cliente>();
+  List<Cliente> _filteredClientes = <Cliente>[];
 
   //Refresh Indicator
   bool _estaCarregando = false;
@@ -93,7 +91,10 @@ class _ClienteTelaState extends State<ClienteTela> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => AdicionarClienteTela()));
+        },
         child: Icon(Icons.add),
         backgroundColor: Theme.of(context).primaryColor,
       ),
@@ -173,15 +174,15 @@ class _ClienteTelaState extends State<ClienteTela> {
                             Text(
                               "Data de Nascimento: " +
                                   _filteredClientes[index]
-                                      .dataDeNascimento
-                                      .substring(5, 7) +
-                                  "/" +
-                                  _filteredClientes[index]
-                                      .dataDeNascimento
+                                      .dataNascFund
                                       .substring(8, 10) +
                                   "/" +
                                   _filteredClientes[index]
-                                      .dataDeNascimento
+                                      .dataNascFund
+                                      .substring(5, 7) +
+                                  "/" +
+                                  _filteredClientes[index]
+                                      .dataNascFund
                                       .substring(0, 4),
                               style:
                                   TextStyle(color: Colors.black, fontSize: 13),

@@ -17,13 +17,13 @@ class Endereco {
       this.estado});
 
   Endereco.fromJson(Map<String, dynamic> json) {
-    logradouro = json['logradouro'];
-    numero = json['numero'];
-    complemento = json['complemento'];
-    bairro = json['bairro'];
-    cep = json['cep'];
-    cidade = json['cidade'];
-    estado = json['estado'];
+    logradouro = json['logradouro'] == null ? '-' : json['logradouro'];
+    numero = json['numero'] == null ? '-' : json['numero'];
+    complemento = json['complemento'] == null ? '-' : json['complemento'];
+    bairro = json['bairro'] == null ? '-' : json['bairro'];
+    cep = json['cep'] == null ? '-' : json['cep'];
+    cidade = json['cidade'] == null ? '-' : json['cidade'];
+    estado = json['estado'] == null ? '-' : json['estado'];
   }
 
   Map<String, dynamic> toJson() {

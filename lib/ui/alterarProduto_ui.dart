@@ -343,7 +343,8 @@ class _AlteraProdutoTelaState extends State<AlteraProdutoTela> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Container(
-                    height: 30,
+                    alignment: Alignment.center,
+                    height: 40,
                     width: 120,
                     decoration: BoxDecoration(
                       color: Colors.redAccent[700],
@@ -351,8 +352,7 @@ class _AlteraProdutoTelaState extends State<AlteraProdutoTela> {
                         Radius.circular(7),
                       ),
                     ),
-                    child: FlatButton(
-                      color: Colors.redAccent[700],
+                    child: TextButton(
                       child: Text(
                         "Cancelar",
                         style: TextStyle(
@@ -369,7 +369,8 @@ class _AlteraProdutoTelaState extends State<AlteraProdutoTela> {
                     width: 30,
                   ),
                   Container(
-                    height: 30,
+                    alignment: Alignment.center,
+                    height: 40,
                     width: 120,
                     decoration: BoxDecoration(
                       color: Theme.of(context).primaryColor,
@@ -377,8 +378,7 @@ class _AlteraProdutoTelaState extends State<AlteraProdutoTela> {
                         Radius.circular(7),
                       ),
                     ),
-                    child: FlatButton(
-                      color: Theme.of(context).primaryColor,
+                    child: TextButton(
                       child: Text(
                         "Alterar",
                         style: TextStyle(

@@ -5,7 +5,7 @@ class Cliente {
   String nome;
   String tipoCliente;
   String cpfCnpj;
-  String dataDeNascimento;
+  String dataNascFund;
   Endereco endereco;
   bool ativo;
   String email;
@@ -16,7 +16,7 @@ class Cliente {
       this.nome,
       this.tipoCliente,
       this.cpfCnpj,
-      this.dataDeNascimento,
+      this.dataNascFund,
       this.endereco,
       this.ativo,
       this.email,
@@ -27,7 +27,7 @@ class Cliente {
     nome = json['nome'];
     tipoCliente = json['tipoCliente'];
     cpfCnpj = json['cpfCnpj'];
-    dataDeNascimento = json['dataDeNascimento'];
+    dataNascFund = json['dataNascFund'];
     endereco = json['endereco'] != null
         ? new Endereco.fromJson(json['endereco'])
         : null;
@@ -42,7 +42,7 @@ class Cliente {
     data['nome'] = this.nome;
     data['tipoCliente'] = this.tipoCliente;
     data['cpfCnpj'] = this.cpfCnpj;
-    data['dataDeNascimento'] = this.dataDeNascimento;
+    data['dataNascFund'] = this.dataNascFund;
     if (this.endereco != null) {
       data['endereco'] = this.endereco.toJson();
     }

@@ -1,32 +1,34 @@
 import 'dart:convert';
 
 import 'package:peca_certa_app/models/API_Response.dart';
+import 'package:peca_certa_app/models/Orcamento.dart';
 import 'package:peca_certa_app/models/Produto.dart';
 import 'package:http/http.dart' as http;
 
 const String request =
-    "https://pecacerta-api-hml.herokuapp.com/api/v1/produtos";
+    "https://pecacerta-api-hml.herokuapp.com/api/v1/orcamentos";
 const headers = {'Content-Type': 'application/json'};
 
-class ProdutoController {
-  ProdutoController();
+class OrcamentoController {
+  OrcamentoController();
 
-//Adicionar Produto
-  Future<APIResponse<bool>> incluirProduto(Produto item) async {
+//Adicionar Orcamento
+  Future<APIResponse<bool>> incluirOrcamento(Orcamento item) async {
     return await http
         .post(request, headers: headers, body: json.encode(item.toJson()))
         .then((data) {
       if (data.statusCode == 201) {
+        print(data.body);
+
         return APIResponse<bool>(data: true);
       }
-      print(data.statusCode.toString());
       return APIResponse<bool>(error: true, errorMessage: 'Erro');
     }).catchError((_) =>
             APIResponse<bool>(error: true, errorMessage: 'Erro (Exceção)'));
   }
 
-//Consultar Produto pelo ID
-  Future<APIResponse<Produto>> consultaProdutoID(String codigo) {
+//Consultar Orçamento pelo ID
+  Future<APIResponse<Produto>> consultaOrcamentoID(String codigo) {
     return http.get(request + "/" + codigo, headers: headers).then((data) {
       if (data.statusCode == 200) {
         final jsonData = json.decode(data.body);
@@ -38,8 +40,8 @@ class ProdutoController {
         (_) => APIResponse<Produto>(error: true, errorMessage: toString()));
   }
 
-//Alterar Produto pelo ID
-  Future<APIResponse<bool>> alterarProduto(Produto item) async {
+//Alterar Orcamento pelo ID
+  Future<APIResponse<bool>> alterarOrcamento(Orcamento item) async {
     return await http
         .put(request + "/" + item.codigo.toString(),
             headers: headers, body: json.encode(item.toJson()))
@@ -53,18 +55,17 @@ class ProdutoController {
             APIResponse<bool>(error: true, errorMessage: 'Erro (Exceção)'));
   }
 
-//Listar Produtos
-  Future<APIResponse<List<Produto>>> listarProdutos() {
+//Listar Orçamentos
+  Future<APIResponse<List<Orcamento>>> listarOrcamentos() {
     return http.get(request, headers: headers).then((data) {
       if (data.statusCode == 200) {
         final jsonData = json.decode(Utf8Decoder().convert(data.bodyBytes));
-        final produtos = <Produto>[];
+        final produtos = <Orcamento>[];
 
         for (var item in jsonData) {
-          produtos.add(Produto.fromJson(item));
+          produtos.add(Orcamento.fromJson(item));
         }
-
-        return APIResponse<List<Produto>>(data: produtos);
+        return APIResponse<List<Orcamento>>(data: produtos);
       }
       return APIResponse<List<Produto>>(
           error: true,

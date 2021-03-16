@@ -1,3 +1,4 @@
+import 'package:brasil_fields/brasil_fields.dart';
 import 'package:flutter/material.dart';
 import 'package:peca_certa_app/controller/funcionarioController.dart';
 import 'package:peca_certa_app/models/API_Response.dart';
@@ -195,7 +196,8 @@ class _FuncionarioTelaState extends State<FuncionarioTela> {
                               ),
                               Text(
                                 "Telefone: " +
-                                    _filteredFuncionarios[index].telefone,
+                                    UtilBrasilFields.obterTelefone(
+                                        _filteredFuncionarios[index].telefone),
                                 style: TextStyle(
                                     color: Colors.black, fontSize: 13),
                               ),

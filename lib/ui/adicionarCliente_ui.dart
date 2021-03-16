@@ -38,8 +38,6 @@ class _AdicionarClienteTelaState extends State<AdicionarClienteTela> {
   //Controle checkbox
   bool _selPF, _selPJ;
 
-  //Mostra Calendario
-
   @override
   void initState() {
     _selPJ = false;
@@ -213,7 +211,17 @@ class _AdicionarClienteTelaState extends State<AdicionarClienteTela> {
                               context: context,
                               initialDate: DateTime.now(),
                               firstDate: DateTime(1900),
-                              lastDate: DateTime.now());
+                              lastDate: DateTime.now(),
+                              builder: (BuildContext context, Widget child) {
+                                return Theme(
+                                  data: ThemeData.light().copyWith(
+                                    colorScheme: ColorScheme.light().copyWith(
+                                      primary: Theme.of(context).primaryColor,
+                                    ),
+                                  ),
+                                  child: child,
+                                );
+                              });
 
                           if (data != null) {
                             final _newData =

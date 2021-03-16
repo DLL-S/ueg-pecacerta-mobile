@@ -7,7 +7,6 @@ import 'package:brasil_fields/brasil_fields.dart';
 import 'package:peca_certa_app/controller/funcionarioController.dart';
 import 'package:peca_certa_app/models/Endereco.dart';
 import 'package:peca_certa_app/models/Funcionario.dart';
-import 'package:peca_certa_app/ui/clientes_ui.dart';
 import 'package:peca_certa_app/ui/funcionarios_ui.dart';
 
 class AlterarFuncionarioTela extends StatefulWidget {

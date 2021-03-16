@@ -4,6 +4,7 @@ import 'package:peca_certa_app/models/API_Response.dart';
 import 'package:peca_certa_app/models/Cliente.dart';
 import 'package:cpfcnpj/cpfcnpj.dart';
 import 'package:peca_certa_app/ui/adicionarCliente_ui.dart';
+import 'package:peca_certa_app/ui/adicionarOrcamento_ui.dart';
 import 'package:peca_certa_app/ui/alterarCliente_ui.dart';
 
 class ClienteTela extends StatefulWidget {
@@ -27,7 +28,7 @@ class _ClienteTelaState extends State<ClienteTela> {
   //Refresh Indicator
   bool _estaCarregando = false;
 
-  //Solicitações para API dos dados de funcionários.
+  //Solicitações para API dos dados de clientes.
   void listaClientes() async {
     setState(() {
       _estaCarregando = true;
@@ -116,170 +117,186 @@ class _ClienteTelaState extends State<ClienteTela> {
                     return Dismissible(
                       key: Key(_filteredClientes[index].toString()),
                       child: Card(
-                          child: ExpansionTile(
-                        backgroundColor: Theme.of(context).backgroundColor,
-                        childrenPadding:
-                            EdgeInsets.only(left: 10, bottom: 10, right: 10),
-                        expandedCrossAxisAlignment: CrossAxisAlignment.start,
-                        title: Text(_filteredClientes[index].nome),
-                        subtitle: Text(
-                          _filteredClientes[index].tipoCliente ==
-                                  "PESSOA_JURIDICA"
-                              ? "Empresa"
-                              : "Pessoa",
-                          style: TextStyle(fontSize: 12),
-                        ),
-                        leading: Container(
-                          width: 30,
-                          height: 30,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: Colors.white,
-                            border: Border.all(
-                              color: Colors.black,
-                              width: 1,
+                        child: ExpansionTile(
+                          backgroundColor: Theme.of(context).backgroundColor,
+                          childrenPadding:
+                              EdgeInsets.only(left: 10, bottom: 10, right: 10),
+                          expandedCrossAxisAlignment: CrossAxisAlignment.start,
+                          title: Text(_filteredClientes[index].nome),
+                          subtitle: Text(
+                            _filteredClientes[index].tipoCliente ==
+                                    "PESSOA_JURIDICA"
+                                ? "Empresa"
+                                : "Pessoa",
+                            style: TextStyle(fontSize: 12),
+                          ),
+                          leading: Container(
+                            width: 30,
+                            height: 30,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: Colors.white,
+                              border: Border.all(
+                                color: Colors.black,
+                                width: 1,
+                              ),
+                              image: DecorationImage(
+                                  fit: BoxFit.contain,
+                                  image: AssetImage("assets/person.png"),
+                                  scale: 0.5),
                             ),
-                            image: DecorationImage(
-                                fit: BoxFit.contain,
-                                image: AssetImage("assets/person.png"),
-                                scale: 0.5),
                           ),
+                          children: <Widget>[
+                            Divider(
+                              color: Theme.of(context).primaryColor,
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Row(
+                              children: <Widget>[
+                                Text(
+                                  _filteredClientes[index].tipoCliente ==
+                                          "PESSOA_JURIDICA"
+                                      ? "CNPJ: " +
+                                          CNPJ.format(
+                                              _filteredClientes[index].cpfCnpj)
+                                      : "CPF: " +
+                                          CPF.format(
+                                              _filteredClientes[index].cpfCnpj),
+                                  style: TextStyle(
+                                      color: Colors.black, fontSize: 13),
+                                ),
+                              ],
+                            ),
+                            SizedBox(
+                              height: 10,
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  _filteredClientes[index].tipoCliente ==
+                                          "PESSOA_JURIDICA"
+                                      ? "Data de Fundação: " +
+                                          _filteredClientes[index]
+                                              .dataNascFund
+                                              .substring(8, 10) +
+                                          "/" +
+                                          _filteredClientes[index]
+                                              .dataNascFund
+                                              .substring(5, 7) +
+                                          "/" +
+                                          _filteredClientes[index]
+                                              .dataNascFund
+                                              .substring(0, 4)
+                                      : "Data de Nascimento: " +
+                                          _filteredClientes[index]
+                                              .dataNascFund
+                                              .substring(8, 10) +
+                                          "/" +
+                                          _filteredClientes[index]
+                                              .dataNascFund
+                                              .substring(5, 7) +
+                                          "/" +
+                                          _filteredClientes[index]
+                                              .dataNascFund
+                                              .substring(0, 4),
+                                  style: TextStyle(
+                                      color: Colors.black, fontSize: 13),
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Text(
+                                  "E-mail: " + _filteredClientes[index].email,
+                                  style: TextStyle(
+                                      color: Colors.black, fontSize: 13),
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Text(
+                                  "Telefone: " +
+                                      _filteredClientes[index].telefone,
+                                  style: TextStyle(
+                                      color: Colors.black, fontSize: 13),
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Text(
+                                  "Endereço: " +
+                                      _filteredClientes[index]
+                                          .endereco
+                                          .logradouro,
+                                  style: TextStyle(
+                                      color: Colors.black, fontSize: 13),
+                                ),
+                                Text(
+                                  "Nº: " +
+                                      _filteredClientes[index].endereco.numero +
+                                      " | Complemento: " +
+                                      _filteredClientes[index]
+                                          .endereco
+                                          .complemento,
+                                  style: TextStyle(
+                                      color: Colors.black, fontSize: 13),
+                                ),
+                                Text(
+                                  "Bairro: " +
+                                      _filteredClientes[index].endereco.bairro,
+                                  style: TextStyle(
+                                      color: Colors.black, fontSize: 13),
+                                ),
+                                SizedBox(
+                                  height: 10,
+                                ),
+                                Text(
+                                  "Cidade: " +
+                                      _filteredClientes[index].endereco.cidade +
+                                      " | Estado: " +
+                                      _filteredClientes[index].endereco.estado,
+                                  style: TextStyle(
+                                      color: Colors.black, fontSize: 13),
+                                ),
+                                SizedBox(
+                                  height: 5,
+                                ),
+                                Text(
+                                  "CEP: " +
+                                      _filteredClientes[index].endereco.cep,
+                                  style: TextStyle(
+                                      color: Colors.black, fontSize: 13),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
-                        children: <Widget>[
-                          Divider(
-                            color: Theme.of(context).primaryColor,
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          Row(
-                            children: <Widget>[
-                              Text(
-                                _filteredClientes[index].tipoCliente ==
-                                        "PESSOA_JURIDICA"
-                                    ? "CNPJ: " +
-                                        CNPJ.format(
-                                            _filteredClientes[index].cpfCnpj)
-                                    : "CPF: " +
-                                        CPF.format(
-                                            _filteredClientes[index].cpfCnpj),
-                                style: TextStyle(
-                                    color: Colors.black, fontSize: 13),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                _filteredClientes[index].tipoCliente ==
-                                        "PESSOA_JURIDICA"
-                                    ? "Data de Fundação: " +
-                                        _filteredClientes[index]
-                                            .dataNascFund
-                                            .substring(8, 10) +
-                                        "/" +
-                                        _filteredClientes[index]
-                                            .dataNascFund
-                                            .substring(5, 7) +
-                                        "/" +
-                                        _filteredClientes[index]
-                                            .dataNascFund
-                                            .substring(0, 4)
-                                    : "Data de Nascimento: " +
-                                        _filteredClientes[index]
-                                            .dataNascFund
-                                            .substring(8, 10) +
-                                        "/" +
-                                        _filteredClientes[index]
-                                            .dataNascFund
-                                            .substring(5, 7) +
-                                        "/" +
-                                        _filteredClientes[index]
-                                            .dataNascFund
-                                            .substring(0, 4),
-                                style: TextStyle(
-                                    color: Colors.black, fontSize: 13),
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Text(
-                                "E-mail: " + _filteredClientes[index].email,
-                                style: TextStyle(
-                                    color: Colors.black, fontSize: 13),
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Text(
-                                "Telefone: " +
-                                    _filteredClientes[index].telefone,
-                                style: TextStyle(
-                                    color: Colors.black, fontSize: 13),
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Text(
-                                "Endereço: " +
-                                    _filteredClientes[index]
-                                        .endereco
-                                        .logradouro,
-                                style: TextStyle(
-                                    color: Colors.black, fontSize: 13),
-                              ),
-                              Text(
-                                "Nº: " +
-                                    _filteredClientes[index].endereco.numero +
-                                    " | Complemento: " +
-                                    _filteredClientes[index]
-                                        .endereco
-                                        .complemento,
-                                style: TextStyle(
-                                    color: Colors.black, fontSize: 13),
-                              ),
-                              Text(
-                                "Bairro: " +
-                                    _filteredClientes[index].endereco.bairro,
-                                style: TextStyle(
-                                    color: Colors.black, fontSize: 13),
-                              ),
-                              SizedBox(
-                                height: 10,
-                              ),
-                              Text(
-                                "Cidade: " +
-                                    _filteredClientes[index].endereco.cidade +
-                                    " | Estado: " +
-                                    _filteredClientes[index].endereco.estado,
-                                style: TextStyle(
-                                    color: Colors.black, fontSize: 13),
-                              ),
-                              SizedBox(
-                                height: 5,
-                              ),
-                              Text(
-                                "CEP: " + _filteredClientes[index].endereco.cep,
-                                style: TextStyle(
-                                    color: Colors.black, fontSize: 13),
-                              ),
-                            ],
-                          ),
-                        ],
-                      )),
-                      direction: DismissDirection.endToStart,
+                      ),
                       background: Container(
-                          padding: EdgeInsets.only(right: 20),
-                          color: Theme.of(context).primaryColor,
-                          alignment: Alignment.centerRight,
-                          child: Icon(
-                            Icons.mode_rounded,
-                            color: Colors.white,
-                          )),
+                        padding: EdgeInsets.only(left: 20, right: 20),
+                        color: Theme.of(context).primaryColor,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            Align(
+                              alignment: Alignment.centerRight,
+                              child: Icon(
+                                Icons.request_page,
+                                color: Colors.white,
+                              ),
+                            ),
+                            Align(
+                              alignment: Alignment.centerLeft,
+                              child: Icon(
+                                Icons.edit,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                       onDismissed: (direction) {
                         if (direction == DismissDirection.endToStart) {
                           Navigator.push(
@@ -287,6 +304,13 @@ class _ClienteTelaState extends State<ClienteTela> {
                               MaterialPageRoute(
                                   builder: (context) => AlterarClienteTela(
                                       idCliente: _filteredClientes[index])));
+                          listaClientes();
+                        } else if (direction == DismissDirection.startToEnd) {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => AdicionarOrcamentoTela(
+                                      cliente: _filteredClientes[index])));
                           listaClientes();
                         }
                       },

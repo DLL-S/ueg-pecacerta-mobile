@@ -6,6 +6,7 @@ import 'package:peca_certa_app/ui/clientes_ui.dart';
 import 'package:peca_certa_app/ui/funcionarios_ui.dart';
 import 'package:peca_certa_app/ui/login_ui.dart';
 import 'package:peca_certa_app/ui/marcas_ui.dart';
+import 'package:peca_certa_app/ui/orcamentos_ui.dart';
 import 'package:peca_certa_app/ui/produtos_ui.dart';
 import 'package:peca_certa_app/ui/sobre_ui.dart';
 
@@ -281,7 +282,10 @@ class _PaginaInicialState extends State<PaginaInicial> {
                     )
                   ],
                 ),
-                onPressed: () => {},
+                onPressed: () => {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => OrcamentosTela()))
+                },
               ),
             ),
           ),

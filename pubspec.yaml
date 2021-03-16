@@ -21,6 +21,7 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  flutter_spinbox: ^0.3.1+2
   cpfcnpj: ^1.0.3
   brasil_fields: ^1.0.0
   ant_icons: ^1.0.0

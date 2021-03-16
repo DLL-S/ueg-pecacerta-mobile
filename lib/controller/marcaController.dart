@@ -1,18 +1,18 @@
 import 'dart:convert';
 
 import 'package:peca_certa_app/models/API_Response.dart';
-import 'package:peca_certa_app/models/Categoria.dart';
+import 'package:peca_certa_app/models/Marca.dart';
 import 'package:http/http.dart' as http;
 
-const String request = "https://pecacerta-api.herokuapp.com/api/v1/categorias";
+const String request = "https://pecacerta-api.herokuapp.com/api/v1/marcas";
 const headers = {'Content-Type': 'application/json'};
-Categoria cat = new Categoria();
+Marca cat = new Marca();
 
-class CategoriaController {
-  CategoriaController();
+class MarcaController {
+  MarcaController();
 
-//Adicionar Categoria
-  Future<APIResponse<bool>> incluirCategoria(Categoria item) async {
+//Adicionar Marca
+  Future<APIResponse<bool>> incluirMarca(Marca item) async {
     return await http
         .post(request, headers: headers, body: json.encode(item.toJson()))
         .then((data) {
@@ -25,8 +25,8 @@ class CategoriaController {
             APIResponse<bool>(error: true, errorMessage: 'Erro (Exceção)'));
   }
 
-//Alterar Categoria
-  Future<APIResponse<bool>> alterarCategoria(Categoria item) async {
+//Alterar Marca
+  Future<APIResponse<bool>> alterarMarca(Marca item) async {
     return await http
         .put(request + "/" + item.codigo.toString(),
             headers: headers, body: json.encode(item.toJson()))
@@ -40,52 +40,54 @@ class CategoriaController {
             APIResponse<bool>(error: true, errorMessage: 'Erro (Exceção)'));
   }
 
-//Consultar Categoria pelo ID
-  Future<APIResponse<Categoria>> consultaCategoriaID(String codigo) {
+//Consultar Marca pelo ID
+  Future<APIResponse<Marca>> consultaMarcaID(String codigo) {
     return http.get(request + "/" + codigo, headers: headers).then((data) {
       if (data.statusCode == 200) {
         final jsonData = json.decode(data.body);
-        return APIResponse<Categoria>(data: Categoria.fromJson(jsonData));
+        return APIResponse<Marca>(data: Marca.fromJson(jsonData));
       }
-      return APIResponse<Categoria>(
+      return APIResponse<Marca>(
           error: true, errorMessage: data.statusCode.toString());
     }).catchError(
-        (_) => APIResponse<Categoria>(error: true, errorMessage: toString()));
+        (_) => APIResponse<Marca>(error: true, errorMessage: toString()));
   }
 
-//Método para Listar categorias
-  Future<APIResponse<List<Categoria>>> listarCategorias() {
+//Método para Listar marcas
+  Future<APIResponse<List<Marca>>> listarMarcas() {
     return http.get(request, headers: headers).then((data) {
       if (data.statusCode == 200) {
         final jsonData = json.decode(Utf8Decoder().convert(data.bodyBytes));
-        final categorias = <Categoria>[];
+        final marcas = <Marca>[];
 
         for (var item in jsonData) {
-          categorias.add(Categoria.fromJson(item));
+          marcas.add(Marca.fromJson(item));
         }
-        return APIResponse<List<Categoria>>(data: categorias);
+
+        return APIResponse<List<Marca>>(data: marcas);
       }
-      return APIResponse<List<Categoria>>(
+      return APIResponse<List<Marca>>(
           error: true, errorMessage: data.statusCode.toString());
-    }).catchError((_) => APIResponse<List<Categoria>>(
-        error: true, errorMessage: "Ocorreu um erro"));
+    }).catchError((_) =>
+        APIResponse<List<Marca>>(error: true, errorMessage: "Ocorreu um erro"));
   }
 
-  //Método para Listar categorias ativas
-  Future<APIResponse<List<Categoria>>> listarCategoriasAtivas() {
-    return http.get(request + "/ativos", headers: headers).then((data) {
+  //Método para Listar marcas ativas
+  Future<APIResponse<List<Marca>>> listarMarcasAtivas() {
+    return http.get(request + '/ativos', headers: headers).then((data) {
       if (data.statusCode == 200) {
         final jsonData = json.decode(Utf8Decoder().convert(data.bodyBytes));
-        final categorias = <Categoria>[];
+        final marcas = <Marca>[];
 
         for (var item in jsonData) {
-          categorias.add(Categoria.fromJson(item));
+          marcas.add(Marca.fromJson(item));
         }
-        return APIResponse<List<Categoria>>(data: categorias);
+
+        return APIResponse<List<Marca>>(data: marcas);
       }
-      return APIResponse<List<Categoria>>(
+      return APIResponse<List<Marca>>(
           error: true, errorMessage: data.statusCode.toString());
-    }).catchError((_) => APIResponse<List<Categoria>>(
-        error: true, errorMessage: "Ocorreu um erro"));
+    }).catchError((_) =>
+        APIResponse<List<Marca>>(error: true, errorMessage: "Ocorreu um erro"));
   }
 }

@@ -21,8 +21,12 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  flutter_spinbox: ^0.3.1+2
+  cpfcnpj: ^1.0.3
+  brasil_fields: ^1.0.0
   ant_icons: ^1.0.0
   http: ^0.12.2
+  mask_text_input_formatter: ^1.2.1
   flutter:
     sdk: flutter
   sqflite: any
@@ -31,6 +35,8 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.0
+
+
 
 dev_dependencies:
   flutter_test:
@@ -80,3 +86,6 @@ flutter:
 
   assets:
     - assets/logo.png
+    - assets/person.png
+    - assets/DLLS.png
+    - assets/DLLSLogo.gif

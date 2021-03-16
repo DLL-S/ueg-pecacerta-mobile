@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:peca_certa_app/ui/login_pagina.dart';
-import 'package:peca_certa_app/controller/produtoController.dart';
+import 'package:peca_certa_app/ui/inicial_ui.dart';
+import 'package:peca_certa_app/ui/login_ui.dart';
+import 'package:peca_certa_app/ui/orcamentos_ui.dart';
 
 void main() async {
   runApp(MyApp());
@@ -18,6 +19,10 @@ class MyApp extends StatelessWidget {
         backgroundColor: Color(0xFFDFE6ED),
       ),
       home: LoginPagina(),
+      routes: <String, WidgetBuilder>{
+        '/inicial': (context) => PaginaInicial(),
+        '/orcamentos': (context) => OrcamentosTela(),
+      },
     );
   }
 }

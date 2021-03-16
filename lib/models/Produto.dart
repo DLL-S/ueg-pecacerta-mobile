@@ -1,12 +1,5 @@
 import 'Categoria.dart';
 import 'Marca.dart';
-import 'dart:convert';
-
-List<Produto> produtoFromJson(String str) =>
-    List<Produto>.from(json.decode(str).map((x) => Produto.fromJson(x)));
-
-String produtoToJson(List<Produto> data) =>
-    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
 
 class Produto {
   int codigo;
@@ -17,36 +10,48 @@ class Produto {
   Marca marca;
   double preco;
   int qtdeEstoque;
+  bool ativo;
 
-  Produto({
-    this.codigo,
-    this.codigoDeBarras,
-    this.nome,
-    this.descricao,
-    this.categoria,
-    this.marca,
-    this.preco,
-    this.qtdeEstoque,
-  });
+  Produto(
+      {this.codigo,
+      this.codigoDeBarras,
+      this.nome,
+      this.descricao,
+      this.categoria,
+      this.marca,
+      this.preco,
+      this.qtdeEstoque,
+      this.ativo});
 
-  factory Produto.fromJson(Map<String, dynamic> json) => Produto(
-      codigo: json["codigo"],
-      codigoDeBarras: json["codigoDeBarras"],
-      nome: json["nome"],
-      descricao: json["descicao"],
-      categoria: json["categoria"],
-      marca: json["marca"],
-      preco: json["preco"],
-      qtdeEstoque: json["qtdeEstoque"]);
+  Produto.fromJson(Map<String, dynamic> json) {
+    codigo = json['codigo'];
+    codigoDeBarras = json['codigoDeBarras'];
+    nome = json['nome'];
+    descricao = json['descricao'];
+    categoria = json['categoria'] != null
+        ? new Categoria.fromJson(json['categoria'])
+        : null;
+    marca = json['marca'] != null ? new Marca.fromJson(json['marca']) : null;
+    preco = json['preco'];
+    qtdeEstoque = json['qtdeEstoque'];
+    ativo = json['ativo'];
+  }
 
-  Map<String, dynamic> toJson() => {
-        "codigo": codigo,
-        "codigoDeBarras": codigoDeBarras,
-        "nome": nome,
-        "descicao": descricao,
-        "categoria": categoria,
-        "marca": marca,
-        "preco": preco,
-        "qtdeEstoque": qtdeEstoque,
-      };
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['codigo'] = this.codigo;
+    data['codigoDeBarras'] = this.codigoDeBarras;
+    data['nome'] = this.nome;
+    data['descricao'] = this.descricao;
+    if (this.categoria != null) {
+      data['categoria'] = this.categoria.toJson();
+    }
+    if (this.marca != null) {
+      data['marca'] = this.marca.toJson();
+    }
+    data['preco'] = this.preco;
+    data['qtdeEstoque'] = this.qtdeEstoque;
+    data['ativo'] = this.ativo;
+    return data;
+  }
 }

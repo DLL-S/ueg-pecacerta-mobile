@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:peca_certa_app/ui/inicial_pagina.dart';
+import 'package:peca_certa_app/ui/inicial_ui.dart';
 
 class LoginPagina extends StatelessWidget {
   @override
@@ -69,8 +69,9 @@ class LoginPagina extends StatelessWidget {
                   ),
                 ),
                 child: SizedBox.expand(
-                  child: FlatButton(
-                    color: Theme.of(context).primaryColor,
+                  child: TextButton(
+                    style: TextButton.styleFrom(
+                        backgroundColor: Theme.of(context).primaryColor),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[

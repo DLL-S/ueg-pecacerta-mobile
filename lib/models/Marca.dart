@@ -1,25 +1,21 @@
-import 'dart:convert';
-
-List<Marca> marcaFromJson(String str) =>
-    List<Marca>.from(json.decode(str).map((x) => Marca.fromJson(x)));
-
-String categoriaToJson(List<Marca> data) =>
-    json.encode(List<dynamic>.from(data.map((x) => x.toJson())));
-
 class Marca {
   int codigo;
   String nome;
+  bool ativo;
 
-  Marca({
-    this.codigo,
-    this.nome,
-  });
+  Marca({this.codigo, this.nome, this.ativo});
 
-  factory Marca.fromJson(Map<String, dynamic> json) =>
-      Marca(codigo: json["codigo"], nome: json["nome"]);
+  Marca.fromJson(Map<String, dynamic> json) {
+    codigo = json['codigo'];
+    nome = json['nome'];
+    ativo = json['ativo'];
+  }
 
-  Map<String, dynamic> toJson() => {
-        "codigo": codigo,
-        "nome": nome,
-      };
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['codigo'] = this.codigo;
+    data['nome'] = this.nome;
+    data['ativo'] = this.ativo;
+    return data;
+  }
 }

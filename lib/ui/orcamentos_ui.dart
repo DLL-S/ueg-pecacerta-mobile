@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:peca_certa_app/controller/orcamentoController.dart';
 import 'package:peca_certa_app/models/API_Response.dart';
 import 'package:peca_certa_app/models/Orcamento.dart';
-import 'package:peca_certa_app/ui/adicionarOrcamento_ui.dart';
+import 'package:peca_certa_app/ui/alterarOrcamento_ui.dart';
 
 class OrcamentosTela extends StatefulWidget {
   @override
@@ -31,9 +31,10 @@ class _OrcamentosTelaState extends State<OrcamentosTela> {
     _apiResponse = await orcamentoController.listarOrcamentos();
     _filteredOrcamentos = _apiResponse.data;
     _filteredOrcamentos.sort((a, b) {
-      return a.cliente.nome
+      return a.codigo
+          .toString()
           .toLowerCase()
-          .compareTo(b.cliente.nome.toLowerCase());
+          .compareTo(b.codigo.toString().toLowerCase());
     });
     setState(() {
       _estaCarregando = false;
@@ -91,127 +92,114 @@ class _OrcamentosTelaState extends State<OrcamentosTela> {
                   itemCount: _filteredOrcamentos.length,
                   itemBuilder: (BuildContext _, int index) {
                     return Dismissible(
-                      key: Key(_filteredOrcamentos[index].toString()),
-                      child: Card(
-                        child: ExpansionTile(
-                          backgroundColor: Theme.of(context).backgroundColor,
-                          childrenPadding:
-                              EdgeInsets.only(left: 10, bottom: 10, right: 10),
-                          expandedCrossAxisAlignment: CrossAxisAlignment.start,
-                          title: Text("Orçamento nº: " +
-                              _filteredOrcamentos[index].codigo.toString()),
-                          subtitle: Text(
-                            "Data: " +
-                                _filteredOrcamentos[index]
-                                    .data
-                                    .substring(8, 10) +
-                                "/" +
-                                _filteredOrcamentos[index]
-                                    .data
-                                    .substring(5, 7) +
-                                "/" +
-                                _filteredOrcamentos[index].data.substring(0, 4),
-                            style: TextStyle(fontSize: 12),
-                          ),
-                          leading: Icon(
-                            Icons.attach_money_outlined,
-                            color: Colors.black,
-                          ),
-                          children: <Widget>[
-                            Divider(
-                              color: Theme.of(context).primaryColor,
+                        key: Key(_filteredOrcamentos[index].toString()),
+                        child: Card(
+                          child: ExpansionTile(
+                            backgroundColor: Theme.of(context).backgroundColor,
+                            childrenPadding: EdgeInsets.only(
+                                left: 10, bottom: 10, right: 10),
+                            expandedCrossAxisAlignment:
+                                CrossAxisAlignment.start,
+                            title: Text("Orçamento nº: " +
+                                _filteredOrcamentos[index].codigo.toString()),
+                            subtitle: Text(
+                              "Data: " +
+                                  _filteredOrcamentos[index]
+                                      .data
+                                      .substring(8, 10) +
+                                  "/" +
+                                  _filteredOrcamentos[index]
+                                      .data
+                                      .substring(5, 7) +
+                                  "/" +
+                                  _filteredOrcamentos[index]
+                                      .data
+                                      .substring(0, 4),
+                              style: TextStyle(fontSize: 12),
                             ),
-                            SizedBox(
-                              height: 5,
+                            leading: Icon(
+                              Icons.attach_money_outlined,
+                              color: Colors.black,
                             ),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Text(
-                                  "Cliente: " +
-                                      _filteredOrcamentos[index].cliente.nome,
-                                  style: TextStyle(
-                                      color: Colors.black, fontSize: 13),
-                                ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Text(
-                                  "Valor Toal do Orçamento: " +
-                                      _filteredOrcamentos[index]
-                                          .valorTotal
-                                          .toString(),
-                                  style: TextStyle(
-                                      color: Colors.black, fontSize: 13),
-                                ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Text(
-                                  "Observações: " +
-                                      _filteredOrcamentos[index].observacoes,
-                                  style: TextStyle(
-                                      color: Colors.black, fontSize: 13),
-                                ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-                      background: Container(
-                        padding: EdgeInsets.only(left: 20, right: 20),
-                        color: Theme.of(context).primaryColor,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Align(
-                              alignment: Alignment.centerRight,
-                              child: Icon(
-                                Icons.request_page,
-                                color: Colors.white,
+                            children: <Widget>[
+                              Divider(
+                                color: Theme.of(context).primaryColor,
                               ),
-                            ),
-                            Align(
-                              alignment: Alignment.centerLeft,
-                              child: Icon(
-                                Icons.edit,
-                                color: Colors.white,
+                              SizedBox(
+                                height: 5,
                               ),
-                            ),
-                          ],
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text(
+                                    "Cliente: " +
+                                        _filteredOrcamentos[index].cliente.nome,
+                                    style: TextStyle(
+                                        color: Colors.black, fontSize: 13),
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text(
+                                    "Valor Toal: R\$ " +
+                                        _filteredOrcamentos[index]
+                                            .valorTotal
+                                            .toString(),
+                                    style: TextStyle(
+                                        color: Colors.black, fontSize: 13),
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text(
+                                    "Observações: " +
+                                        _filteredOrcamentos[index].observacoes,
+                                    style: TextStyle(
+                                        color: Colors.black, fontSize: 13),
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
-                      onDismissed: (direction) {
-                        if (direction == DismissDirection.endToStart) {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => AdicionarOrcamentoTela(
-                                        cliente:
-                                            _filteredOrcamentos[index].cliente,
-                                      )));
+                        background: Container(
+                          padding: EdgeInsets.only(left: 20, right: 20),
+                          color: Theme.of(context).primaryColor,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: <Widget>[
+                              Align(
+                                alignment: Alignment.centerRight,
+                                child: Icon(
+                                  Icons.edit,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        direction: DismissDirection.endToStart,
+                        onDismissed: (direction) {
+                          if (direction == DismissDirection.endToStart) {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => AlterarOrcamentoTela(
+                                          cliente: _filteredOrcamentos[index]
+                                              .cliente,
+                                          orcamentoCriado:
+                                              _filteredOrcamentos[index],
+                                        )));
+                            listarOrcamentos();
+                          }
                           listarOrcamentos();
-                        } else if (direction == DismissDirection.startToEnd) {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => AdicionarOrcamentoTela(
-                                        cliente:
-                                            _filteredOrcamentos[index].cliente,
-                                      )));
-                          listarOrcamentos();
-                        }
-                      },
-                    );
+                        });
                   },
                 );
               })),

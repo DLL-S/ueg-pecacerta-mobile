@@ -212,10 +212,10 @@ class _AlteraProdutoTelaState extends State<AlteraProdutoTela> {
                       produtoAlterado.descricao =
                           _controllerCampoDescricao.text;
                       _apiResponseCategoriaID = await categoriaController
-                          .consultaCategoriaID(idCategoria);
+                          .consultaCategoriaID(_controllerDropDownCategoria);
                       produtoAlterado.categoria = _apiResponseCategoriaID.data;
-                      _apiResponseMarcaID =
-                          await marcaController.consultaMarcaID(idMarca);
+                      _apiResponseMarcaID = await marcaController
+                          .consultaMarcaID(_controllerDropDownMarca);
                       produtoAlterado.marca = _apiResponseMarcaID.data;
                       produtoAlterado.preco =
                           double.tryParse(_controllerCampoPreco.text);
@@ -396,11 +396,11 @@ class _AlteraProdutoTelaState extends State<AlteraProdutoTela> {
                         produtoAlterado.descricao =
                             _controllerCampoDescricao.text;
                         _apiResponseCategoriaID = await categoriaController
-                            .consultaCategoriaID(idCategoria);
+                            .consultaCategoriaID(_controllerDropDownCategoria);
                         produtoAlterado.categoria =
                             _apiResponseCategoriaID.data;
-                        _apiResponseMarcaID =
-                            await marcaController.consultaMarcaID(idMarca);
+                        _apiResponseMarcaID = await marcaController
+                            .consultaMarcaID(_controllerDropDownMarca);
                         produtoAlterado.marca = _apiResponseMarcaID.data;
                         produtoAlterado.preco =
                             double.tryParse(_controllerCampoPreco.text);

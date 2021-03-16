@@ -49,6 +49,7 @@ class OrcamentoController {
       if (data.statusCode == 204) {
         return APIResponse<bool>(data: true);
       }
+      print(data.body);
       print(data.statusCode.toString());
       return APIResponse<bool>(error: true, errorMessage: 'Erro');
     }).catchError((_) =>
@@ -65,13 +66,14 @@ class OrcamentoController {
         for (var item in jsonData) {
           produtos.add(Orcamento.fromJson(item));
         }
+
         return APIResponse<List<Orcamento>>(data: produtos);
       }
-      return APIResponse<List<Produto>>(
+      return APIResponse<List<Orcamento>>(
           error: true,
           errorMessage: 'Erro: Não foi possível carregar os produtos.' +
               data.statusCode.toString());
-    }).catchError((_) => APIResponse<List<Produto>>(
+    }).catchError((_) => APIResponse<List<Orcamento>>(
         error: true, errorMessage: "Ocorreu um erro"));
   }
 }

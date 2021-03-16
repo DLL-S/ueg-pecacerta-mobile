@@ -72,7 +72,7 @@ class _ProdutosTelaState extends State<ProdutosTela> {
   }
 
   void listaCategorias() async {
-    _apiResponseCategoria = await categoriaController.listarCategorias();
+    _apiResponseCategoria = await categoriaController.listarCategoriasAtivas();
     _apiResponseCategoria.data.sort((a, b) {
       return a.nome.toLowerCase().compareTo(b.nome.toLowerCase());
     });

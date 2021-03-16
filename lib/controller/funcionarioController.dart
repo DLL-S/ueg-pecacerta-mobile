@@ -5,7 +5,7 @@ import 'package:peca_certa_app/models/Funcionario.dart';
 import 'package:http/http.dart' as http;
 
 const String request =
-    "https://pecacerta-api-hml.herokuapp.com/api/v1/funcionarios";
+    "https://pecacerta-api.herokuapp.com/api/v1/funcionarios";
 const headers = {'Content-Type': 'application/json'};
 
 class FuncionarioController {

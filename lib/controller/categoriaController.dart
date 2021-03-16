@@ -4,8 +4,7 @@ import 'package:peca_certa_app/models/API_Response.dart';
 import 'package:peca_certa_app/models/Categoria.dart';
 import 'package:http/http.dart' as http;
 
-const String request =
-    "https://pecacerta-api-hml.herokuapp.com/api/v1/categorias";
+const String request = "https://pecacerta-api.herokuapp.com/api/v1/categorias";
 const headers = {'Content-Type': 'application/json'};
 Categoria cat = new Categoria();
 

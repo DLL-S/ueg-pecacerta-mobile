@@ -134,28 +134,29 @@ class _AlterarOrcamentoTelaState extends State<AlterarOrcamentoTela>
                       color: Colors.white,
                     ),
                   ),
-                  onTap: () async {
+                  onTap: () {
                     Orcamento novoOrcamento = new Orcamento();
+                    setState(() async {
+                      novoOrcamento.ativo = true;
+                      novoOrcamento.codigo = widget.orcamentoCriado.codigo;
+                      novoOrcamento.cliente = widget.cliente;
+                      novoOrcamento.data =
+                          DateFormat('yyyy-MM-dd').format(DateTime.now());
 
-                    novoOrcamento.ativo = true;
-                    novoOrcamento.codigo = widget.orcamentoCriado.codigo;
-                    novoOrcamento.cliente = widget.cliente;
-                    novoOrcamento.data =
-                        DateFormat('yyyy-MM-dd').format(DateTime.now());
+                      novoOrcamento.observacoes = _textObservacoes.text;
+                      novoOrcamento.produtosOrcamento = produtos;
+                      double total = 0.0;
+                      for (int i = 0; i < produtos.length; i++) {
+                        total += listaProdutosIncluidos[i].preco *
+                            produtos[i].quantidade;
+                      }
+                      novoOrcamento.valorTotal = total;
 
-                    novoOrcamento.observacoes = _textObservacoes.text;
-                    novoOrcamento.produtosOrcamento = produtos;
-                    double total = 0.0;
-                    for (int i = 0; i < produtos.length; i++) {
-                      total += listaProdutosIncluidos[i].preco *
-                          produtos[i].quantidade;
-                    }
-                    novoOrcamento.valorTotal = total;
-
-                    await orcamentoController.alterarOrcamento(novoOrcamento);
-                    produtos.clear();
-                    Navigator.popAndPushNamed(context, '/inicial');
-                    Navigator.push(context, routePageOrcamento);
+                      await orcamentoController.alterarOrcamento(novoOrcamento);
+                      produtos.clear();
+                      Navigator.popAndPushNamed(context, '/inicial');
+                      Navigator.push(context, routePageOrcamento);
+                    });
                   },
                 )
               ],
@@ -611,6 +612,12 @@ class _AlterarOrcamentoTelaState extends State<AlterarOrcamentoTela>
                                                     listaProdutosIncluidos.remove(
                                                         listaProdutosIncluidos[
                                                             index]);
+                                                    valorTotaltxt -=
+                                                        (listaProdutosIncluidos[
+                                                                    index]
+                                                                .preco *
+                                                            produtos[index]
+                                                                .quantidade);
                                                   });
                                                 }
                                               });

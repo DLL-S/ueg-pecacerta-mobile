@@ -33,7 +33,7 @@ class _ClienteTelaState extends State<ClienteTela> {
     setState(() {
       _estaCarregando = true;
     });
-    _apiResponse = await clienteController.listarClientes();
+    _apiResponse = await clienteController.listarClientesAtivos();
     _filteredClientes = _apiResponse.data;
     _filteredClientes.sort((a, b) {
       return a.nome.toLowerCase().compareTo(b.nome.toLowerCase());

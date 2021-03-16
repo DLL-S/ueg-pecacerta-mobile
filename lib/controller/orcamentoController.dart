@@ -5,8 +5,7 @@ import 'package:peca_certa_app/models/Orcamento.dart';
 import 'package:peca_certa_app/models/Produto.dart';
 import 'package:http/http.dart' as http;
 
-const String request =
-    "https://pecacerta-api-hml.herokuapp.com/api/v1/orcamentos";
+const String request = "https://pecacerta-api.herokuapp.com/api/v1/orcamentos";
 const headers = {'Content-Type': 'application/json'};
 
 class OrcamentoController {
@@ -49,7 +48,6 @@ class OrcamentoController {
       if (data.statusCode == 204) {
         return APIResponse<bool>(data: true);
       }
-      print(data.body);
       print(data.statusCode.toString());
       return APIResponse<bool>(error: true, errorMessage: 'Erro');
     }).catchError((_) =>
